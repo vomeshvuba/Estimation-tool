@@ -1,0 +1,4891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Estimation & Quotation System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#F97316;
+  --primary-dark:#C2410C;
+  --secondary:#FFF7ED;
+  --success:#15803D;
+  --warning:#F59E0B;
+  --danger:#DC2626;
+  --text:#171717;
+  --muted:#737373;
+  --border:#E5E5E5;
+  --bg:#F8FAFC;
+  --white:#fff;
+  --shadow:0 4px 20px rgba(0,0,0,.05);
+  --sidebar-width:264px;
+  --radius-card:14px;
+  --radius-control:9px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,input,select,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:250px;
+  background:#1c332a;
+  color:white;
+  padding:20px 14px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  overflow:auto;
+}
+
+.logo{
+  padding:10px 12px 25px;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  margin-bottom:18px;
+}
+
+.logo h1{
+  font-size:20px;
+  margin:0 0 5px;
+}
+
+.logo span{
+  font-size:12px;
+  color:#bdcfc2;
+}
+
+.nav-section{
+  font-size:10px;
+  text-transform:uppercase;
+  color:#94ad9d;
+  padding:15px 12px 7px;
+  letter-spacing:1px;
+}
+
+.nav-btn{
+  width:100%;
+  background:transparent;
+  border:0;
+  color:#e0ebe3;
+  text-align:left;
+  padding:11px 12px;
+  border-radius:7px;
+  margin:2px 0;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+  background:#315442;
+  color:white;
+}
+
+/* MAIN */
+.main{
+  margin-left:250px;
+  width:calc(100% - 250px);
+}
+
+.topbar{
+  height:68px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 30px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.topbar h2{
+  margin:0;
+  font-size:21px;
+}
+
+.user-badge{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.content{
+  padding:30px;
+  max-width:1500px;
+  margin:auto;
+}
+
+/* GENERAL */
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  padding:22px;
+  margin-bottom:20px;
+}
+
+.card h3{
+  margin:0 0 17px;
+  font-size:17px;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field label{
+  font-size:12px;
+  font-weight:bold;
+  color:var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:10px 11px;
+  background:white;
+  color:var(--text);
+}
+
+.field textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:2px solid rgba(49,92,70,.16);
+  border-color:var(--primary);
+}
+
+.btn{
+  border:0;
+  border-radius:6px;
+  padding:10px 15px;
+  font-weight:bold;
+  font-size:13px;
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:white;
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+}
+
+.btn-secondary{
+  background:#e8eee9;
+  color:#34483b;
+}
+
+.btn-success{
+  background:var(--success);
+  color:white;
+}
+
+.btn-danger{
+  background:var(--danger);
+  color:white;
+}
+
+.btn-warning{
+  background:var(--warning);
+  color:white;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* DASHBOARD */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:15px;
+  margin-bottom:22px;
+}
+
+.stat{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.stat-label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:7px;
+}
+
+.stat-value{
+  font-size:25px;
+  font-weight:bold;
+  color:var(--primary);
+}
+
+.stat-small{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.progress{
+  height:9px;
+  background:#e5ece6;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  background:var(--primary);
+}
+
+/* TABLE */
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th{
+  background:#edf3ee;
+  text-align:left;
+  padding:11px;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+
+td{
+  padding:11px;
+  border-bottom:1px solid #e8eee9;
+  vertical-align:top;
+}
+
+tr:hover td{
+  background:#f5f8f5;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.badge-draft{background:#e9eeea;color:#4c5a50}
+.badge-review{background:#f8edd9;color:#80551f}
+.badge-approved{background:#dcece1;color:#28583e}
+.badge-sent{background:#e0eeea;color:#315f52}
+.badge-won{background:#dcece1;color:#28583e}
+.badge-lost{background:#f6e3e0;color:#873f3c}
+.badge-hold{background:#e8ebe8;color:#4b554e}
+
+/* STEPS */
+.steps{
+  display:flex;
+  gap:5px;
+  margin-bottom:22px;
+  overflow:auto;
+}
+
+.step{
+  flex:1;
+  min-width:130px;
+  padding:11px;
+  text-align:center;
+  background:#e8eee9;
+  color:#68776d;
+  font-size:12px;
+  font-weight:bold;
+  border-radius:6px;
+}
+
+.step.active{
+  background:var(--primary);
+  color:white;
+}
+
+.step.completed{
+  background:#dcece1;
+  color:var(--primary);
+}
+
+/* CHECKBOXES */
+.checkbox-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.check{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:9px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:13px;
+}
+
+.check input{
+  accent-color:var(--primary);
+}
+
+/* ESTIMATE SUMMARY */
+.summary-box{
+  background:#f5f8f5;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:15px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #e3ebe4;
+  font-size:13px;
+}
+
+.summary-row:last-child{
+  border-bottom:0;
+}
+
+.summary-total{
+  font-size:20px;
+  font-weight:bold;
+  color:var(--primary);
+}
+
+/* ALERT */
+.alert{
+  padding:12px 14px;
+  border-radius:7px;
+  margin-bottom:15px;
+  font-size:13px;
+}
+
+.alert-info{
+  background:#e4efe7;
+  color:#315d43;
+}
+
+.alert-warning{
+  background:#f8edd9;
+  color:#80551f;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-content{
+  background:white;
+  width:min(900px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:10px;
+  padding:25px;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.close{
+  border:0;
+  background:none;
+  font-size:25px;
+}
+
+/* REPORT */
+.report-preview{
+  background:white;
+  max-width:900px;
+  margin:auto;
+  padding:45px;
+  border:1px solid var(--border);
+}
+
+.report-header{
+  border-bottom:3px solid var(--primary);
+  padding-bottom:18px;
+  margin-bottom:25px;
+}
+
+.report-header h1{
+  color:var(--primary);
+  margin:0;
+}
+
+.report-table{
+  margin:20px 0;
+}
+
+.report-total{
+  font-size:20px;
+  font-weight:bold;
+  color:var(--primary);
+  text-align:right;
+  padding-top:15px;
+}
+
+.quote-section{
+  margin:25px 0;
+}
+
+.quote-section h3{
+  color:var(--primary);
+  border-bottom:1px solid var(--border);
+  padding-bottom:7px;
+}
+
+/* MOBILE */
+@media(max-width:1000px){
+  .sidebar{
+    width:210px;
+  }
+
+  .main{
+    margin-left:210px;
+    width:calc(100% - 210px);
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .grid-4{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:750px){
+  .sidebar{
+    position:static;
+    width:100%;
+    min-height:auto;
+  }
+
+  .app{
+    display:block;
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+  }
+
+  .topbar{
+    position:static;
+  }
+
+  .content{
+    padding:15px;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .checkbox-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:none;
+  }
+}
+
+/* PRINT */
+@media print{
+  body{
+    background:white;
+  }
+
+  .sidebar,
+  .topbar,
+  .no-print{
+    display:none !important;
+  }
+
+  .main{
+    margin:0;
+    width:100%;
+  }
+
+  .content{
+    padding:0;
+  }
+
+  .page{
+    display:none !important;
+  }
+
+  #quotePrintPage,
+  #internalPrintPage{
+    display:block !important;
+  }
+
+  .report-preview{
+    border:0;
+    padding:0;
+    max-width:none;
+  }
+}
+</style>
+<style>
+html{scroll-behavior:smooth}
+body{min-width:320px;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+button,input,select,textarea{font-family:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(249,115,22,.22);outline-offset:2px}
+.app{min-height:100vh}
+.sidebar{z-index:30;width:var(--sidebar-width);padding:22px 16px;background:#fff;color:var(--text);border-right:1px solid var(--border);box-shadow:none}
+.logo{display:flex;align-items:center;gap:12px;padding:7px 10px 22px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+.brand-mark{display:grid;flex:0 0 40px;width:40px;height:40px;place-items:center;border-radius:12px;background:var(--secondary);color:var(--primary-dark)}
+.brand-mark svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.logo-copy h1{margin:0 0 2px;font-size:16px;font-weight:700;letter-spacing:0}
+.logo-copy span{color:var(--muted);font-size:11px}
+.nav-section{padding:17px 12px 7px;color:#737373;font-size:10px;font-weight:700;letter-spacing:.09em}
+.nav-btn{position:relative;display:flex;align-items:center;gap:11px;min-height:42px;margin:3px 0;padding:9px 12px;border-radius:9px;color:#525252;font-size:13px;font-weight:500;transition:background .18s ease,color .18s ease,transform .18s ease}
+.nav-btn:hover{background:#FFF7ED;color:#C2410C}
+.nav-btn.active{background:#FFF7ED;color:#C2410C;font-weight:600}
+.nav-btn.active::before{position:absolute;left:-16px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--primary);content:""}
+.nav-icon{display:inline-flex;width:18px;height:18px;flex:0 0 18px;align-items:center;justify-content:center;color:#8a8a8a}
+.nav-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active .nav-icon,.nav-btn:hover .nav-icon{color:var(--primary-dark)}
+.main{width:calc(100% - var(--sidebar-width));margin-left:var(--sidebar-width)}
+.topbar{min-height:76px;height:auto;gap:18px;padding:12px 34px;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.025)}
+.header-context{display:flex;align-items:center;gap:13px;min-width:0}
+.header-copy{min-width:0}
+.breadcrumb{color:#737373;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.topbar h2{margin:1px 0 0;font-size:20px;font-weight:650;line-height:1.25}
+.user-badge{padding:7px 10px;border:1px solid var(--border);border-radius:20px;background:#fff;color:#525252;font-size:12px}
+.menu-toggle{display:none;width:38px;height:38px;align-items:center;justify-content:center;padding:0;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--text)}
+.menu-toggle svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-backdrop{display:none}
+.content{width:100%;max-width:1600px;padding:30px 34px 48px}
+.section-title{gap:20px;align-items:center;margin-bottom:20px}
+.section-title h2{font-size:26px;font-weight:650;line-height:1.25;letter-spacing:0}
+.section-title .muted{margin-top:5px}
+.muted{color:var(--muted);font-size:13px}
+.card,.stat{padding:22px;margin-bottom:18px;border:1px solid var(--border);border-radius:var(--radius-card);background:#fff;box-shadow:var(--shadow)}
+.card h3{margin:0 0 16px;font-size:16px;font-weight:650;line-height:1.35}
+.grid{gap:18px}
+.grid-2,.grid-3,.grid-4{min-width:0}
+.field{min-width:0;gap:7px}
+.field label{color:#525252;font-size:12px;font-weight:600}
+.field input,.field select,.field textarea{min-height:42px;padding:10px 12px;border:1px solid #d4d4d4;border-radius:var(--radius-control);background:#fff;color:var(--text);font-size:13px;transition:border-color .18s ease,box-shadow .18s ease}
+.field input::placeholder,.field textarea::placeholder{color:#737373}
+.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--primary-dark);box-shadow:0 0 0 3px rgba(249,115,22,.12)}
+.field textarea{min-height:110px;line-height:1.55}
+.btn{min-height:38px;padding:9px 14px;border:1px solid transparent;border-radius:var(--radius-control);font-size:13px;font-weight:600;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--primary-dark);color:#fff;box-shadow:0 2px 5px rgba(194,65,12,.12)}
+.btn-primary:hover{background:#9A3412}
+.btn-secondary{border-color:#fed7aa;background:#fff;color:#C2410C}
+.btn-secondary:hover{background:#FFF7ED;border-color:#FDBA74}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{background:#15803d}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.btn-warning{background:#b45309;color:#fff}
+.btn-warning:hover{background:#92400e}
+.actions{align-items:center;gap:9px}
+.stats{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.stat{position:relative;min-width:0;padding:17px 18px;margin:0;transition:box-shadow .18s ease,transform .18s ease}
+.stat:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.07)}
+.stat:first-child{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border-color:#fed7aa}
+.stat-label{margin-bottom:8px;color:#737373;font-size:12px;font-weight:550}
+.stat-value{color:#262626;font-size:26px;font-weight:700;line-height:1.15;overflow-wrap:anywhere}
+.stat:first-child .stat-value{color:#C2410C}
+.stat-small{margin-top:7px;color:#737373;font-size:11px}
+.progress{height:9px;background:#f0f0f0;border-radius:10px}
+.progress-bar{background:var(--primary-dark);border-radius:10px;transition:width .3s ease}
+#progressDraft{background:#737373!important}
+#progressReview{background:#f59e0b!important}
+#progressWon{background:#16a34a!important}
+.table-wrap{max-width:100%;max-height:min(62vh,560px);overflow:auto;border:1px solid #ededed;border-radius:10px;overscroll-behavior:contain}
+table{min-width:680px;border-collapse:separate;border-spacing:0;font-size:12px}
+th{position:sticky;top:0;z-index:2;padding:12px 13px;border-bottom:1px solid #e5e5e5;background:#f5f5f5;color:#525252;font-size:11px;font-weight:650;letter-spacing:.02em}
+td{padding:12px 13px;border-bottom:1px solid #ededed;color:#404040;vertical-align:middle}
+tbody tr:nth-child(even) td{background:#fcfcfc}
+tbody tr:hover td{background:#FFF7ED}
+tbody tr:last-child td{border-bottom:0}
+#dashboard table th:nth-child(5),#dashboard table th:nth-child(6),#dashboardTable td:nth-child(5),#dashboardTable td:nth-child(6),
+#estimates table th:nth-child(5),#estimates table th:nth-child(6),#estimatesTable td:nth-child(5),#estimatesTable td:nth-child(6),
+#clients table th:nth-child(n+3),#clientsTable td:nth-child(n+3),
+#estimateStep4 table th:nth-child(n+3),#estimateBreakdown td:nth-child(n+3){text-align:right;font-variant-numeric:tabular-nums}
+#rates table th:nth-child(n+2),#rates table td:nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}
+tbody td[colspan]{background:#fafafa;color:#737373}
+.table-wrap input.rate-input{width:90px;min-height:34px;padding:6px 8px;border:1px solid #d4d4d4;border-radius:7px;text-align:right;font-size:12px}
+.table-wrap input.rate-input:focus{outline:0;border-color:var(--primary-dark);box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+.badge{padding:5px 9px;border-radius:999px;font-size:10px;font-weight:650;white-space:nowrap}
+.badge-draft,.badge-hold{background:#f1f1f1;color:#525252}
+.badge-review{background:#fef3c7;color:#92400e}
+.badge-approved,.badge-won{background:#dcfce7;color:#166534}
+.badge-sent{background:#FFEDD5;color:#C2410C}
+.badge-lost{background:#fee2e2;color:#b91c1c}
+.step{padding:10px 12px;border:1px solid #e5e5e5;border-radius:8px;background:#f5f5f5;color:#737373;font-size:11px}
+.step.active{border-color:#fed7aa;background:#FFF7ED;color:#C2410C}
+.step.completed{border-color:#fed7aa;background:#FFEDD5;color:#9A3412}
+.check{padding:10px;border-color:var(--border);border-radius:9px;background:#fff}
+.check input{accent-color:var(--primary-dark)}
+.summary-box{padding:16px;border:1px solid var(--border);border-radius:11px;background:#fafafa}
+.summary-row{gap:18px;padding:10px 0;border-color:#e8e8e8;font-size:13px}
+.summary-row span{color:#525252}
+.summary-row strong{font-variant-numeric:tabular-nums;text-align:right}
+.summary-box:has(#finalPrice){border-color:#fed7aa;background:#fff}
+.summary-box:has(#finalPrice) .summary-row:last-child{margin:8px -16px -16px;padding:16px;border-top:1px solid #fed7aa;border-radius:0 0 11px 11px;background:linear-gradient(135deg,#FFF7ED,#FFEDD5)}
+.summary-total{color:#C2410C;font-size:23px;font-weight:750}
+.alert{padding:13px 15px;border:1px solid transparent;border-radius:10px;line-height:1.5}
+.alert-info{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
+.alert-warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.modal{background:rgba(23,23,23,.48);backdrop-filter:blur(2px)}
+.modal-content{padding:26px;border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.close{width:36px;height:36px;border-radius:8px;color:#737373}
+.close:hover{background:#f5f5f5;color:#171717}
+.report-preview{max-width:900px;padding:44px;background:#fff;border:1px solid var(--border);border-radius:4px;box-shadow:var(--shadow);color:#262626;font-size:13px;line-height:1.65}
+.report-header{position:relative;padding-bottom:22px;border-bottom:3px solid var(--primary)}
+.report-header::after{position:absolute;right:0;bottom:-3px;width:72px;height:3px;background:#FDBA74;content:""}
+.report-header h1{font-size:24px;font-weight:700;color:#171717}
+.report-header h2{margin:24px 0 14px;font-size:20px;font-weight:700;color:#C2410C}
+.report-preview .quote-section{margin:23px 0}
+.report-preview .quote-section h3{padding-bottom:8px;border-bottom:1px solid var(--border);color:#262626;font-size:14px;font-weight:700}
+.report-preview .report-table{min-width:0;border-collapse:collapse}
+.report-preview .report-table td{padding:9px 10px;border-bottom:1px solid #ededed}
+.report-preview .report-table tr:nth-child(even) td{background:#fafafa}
+.report-preview .report-total{padding:14px;background:#FFF7ED;color:#9A3412}
+.report-preview tr.report-total td{padding:14px;border-top:1px solid #FDBA74;background:#FFF7ED!important;color:#9A3412;font-weight:700}
+.report-preview .quote-section table:has(thead) th:nth-child(n+2),.report-preview .quote-section table:has(thead) td:nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}
+.sidebar-backdrop{position:fixed;inset:0;z-index:19;width:100%;height:100%;border:0;background:rgba(23,23,23,.42)}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding-right:26px;padding-left:26px}}
+@media(min-width:761px) and (max-width:900px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-3,.checkbox-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .sidebar{display:block;position:fixed;top:0;bottom:0;left:0;width:min(290px,86vw);transform:translateX(-105%);transition:transform .22s ease;box-shadow:0 12px 36px rgba(0,0,0,.12)}
+  body.sidebar-open .sidebar{transform:translateX(0)}
+  body.sidebar-open .sidebar-backdrop{display:block}
+  body.sidebar-open .sidebar{padding-top:90px}
+  body.sidebar-open .topbar{z-index:31}
+  .grid-3,.checkbox-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .main{width:100%;margin-left:0}
+  .menu-toggle{display:inline-flex;flex:0 0 38px}
+  .topbar{position:sticky;top:0;z-index:20;padding-right:24px;padding-left:24px}
+}
+@media(max-width:680px){
+  .topbar{min-height:68px;padding:10px 16px}.breadcrumb{font-size:9px}.topbar h2{font-size:17px}
+  .user-badge{max-width:138px;padding:6px 8px;font-size:10px;text-align:center}
+  .content{padding:22px 16px 36px}.section-title{align-items:flex-start;flex-direction:column;gap:12px}.section-title h2{font-size:22px}
+  .section-title>.actions{width:100%}.section-title>.actions .btn{flex:1}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{padding:14px}.stat-value{font-size:22px}
+  .grid-2,.grid-3,.grid-4,.checkbox-grid{grid-template-columns:minmax(0,1fr)}
+  .card{padding:17px;border-radius:12px}.card h3{font-size:15px}.steps{padding-bottom:4px}.step{flex:0 0 125px}
+  .actions{width:100%}.actions .btn{flex:1 1 auto}.report-preview{padding:24px 18px}
+}
+@media(max-width:420px){
+  .user-badge{max-width:105px;font-size:9px}.stats{grid-template-columns:1fr}
+  .stat{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px}
+  .stat-label,.stat-value,.stat-small{grid-column:1}.stat-value{grid-row:2}.stat-small{grid-row:3}
+  .stat .stat-value{align-self:end}.stat-value{overflow-wrap:anywhere}
+}
+@media print{
+  @page{size:A4;margin:16mm}
+  #quotePrintPage:not(.active),#internalPrintPage:not(.active){display:none!important}
+  html,body{min-width:0;background:#fff!important;color:#171717!important;font-family:Inter,"Segoe UI",sans-serif}
+  .sidebar,.topbar,.no-print,.sidebar-backdrop{display:none!important}
+  .main{width:100%;margin:0}.content{max-width:none;padding:0}.page{display:none!important}
+  #quotePrintPage.active,#internalPrintPage.active{display:block!important}
+  .report-preview{max-width:none;padding:0;border:0;border-radius:0;box-shadow:none}
+  .report-header{border-bottom-color:#F97316}.report-preview .quote-section h3{color:#262626!important}
+  .report-preview .report-table{width:100%}
+}
+</style>
+<style>
+:root{
+  --ink:#0B0B0F;
+  --ink-raised:#111318;
+  --ink-soft:#1F2026;
+  --orange-bright:#FB923C;
+  --surface-alt:#F6F7F9;
+  --line-soft:rgba(23,24,29,.08);
+  --shadow:0 8px 30px rgba(17,19,24,.045);
+}
+body{background:var(--surface-alt)}
+.sidebar{background:linear-gradient(180deg,#0B0B0F,#111318);border-right:1px solid rgba(255,255,255,.07);color:#F8FAFC;box-shadow:8px 0 30px rgba(11,11,15,.08)}
+.logo{border-color:rgba(255,255,255,.1)}
+.brand-mark{background:linear-gradient(145deg,rgba(249,115,22,.24),rgba(194,65,12,.12));color:#FB923C;box-shadow:inset 0 0 0 1px rgba(249,115,22,.18)}
+.logo-copy h1{color:#fff}.logo-copy span{color:#a1a1aa}
+.nav-section{color:#858791}
+.nav-btn{color:#b4b6bf}
+.nav-btn:hover{background:rgba(255,255,255,.055);color:#fff}
+.nav-btn.active{background:linear-gradient(90deg,rgba(249,115,22,.2),rgba(249,115,22,.07));color:#fff;box-shadow:inset 0 0 0 1px rgba(249,115,22,.13),0 0 24px rgba(249,115,22,.07)}
+.nav-btn.active::before{background:linear-gradient(180deg,#FB923C,#C2410C);box-shadow:0 0 12px rgba(249,115,22,.55)}
+.nav-icon{color:#858791}.nav-btn.active .nav-icon,.nav-btn:hover .nav-icon{color:#FB923C}
+.topbar{background:rgba(246,247,249,.84);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(17,19,24,.035)}
+.user-badge{background:rgba(255,255,255,.78);backdrop-filter:blur(12px);border-color:#e4e5e8;color:#52545c}
+.content{max-width:1560px}
+.dashboard-page{background-color:#F6F7F9;background-image:radial-gradient(circle at 96% 0%,rgba(249,115,22,.075),transparent 25%),linear-gradient(rgba(31,32,38,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(31,32,38,.022) 1px,transparent 1px);background-size:auto,32px 32px,32px 32px;background-position:top right,0 0,0 0}
+.dashboard-hero{position:relative;isolation:isolate;min-height:142px;overflow:hidden;padding:25px 28px;margin:0 0 20px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:radial-gradient(ellipse at 87% 10%,rgba(249,115,22,.18),transparent 32%),linear-gradient(125deg,#0B0B0F 0%,#17181D 68%,#1F2026 100%);box-shadow:0 16px 38px rgba(11,11,15,.12)}
+.dashboard-hero::after{position:absolute;z-index:-1;inset:0 0 0 auto;width:40%;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:24px 24px;mask-image:linear-gradient(90deg,transparent,#000 80%);content:""}
+.dashboard-hero>div:first-child{position:relative;z-index:1}
+.dashboard-hero>div:first-child::before{display:block;margin-bottom:9px;color:#FB923C;content:"ESTIMATION OPERATIONS  /  OVERVIEW";font-size:10px;font-weight:700;letter-spacing:.14em}
+.dashboard-hero h2{color:#fff!important;font-size:25px!important;font-weight:650!important;line-height:1.25}
+.dashboard-hero .muted{max-width:590px;margin-top:7px;color:#b4b6bf;font-size:13px}
+.dashboard-hero>.btn{position:relative;z-index:1;border:1px solid rgba(255,255,255,.14);background:linear-gradient(135deg,#C2410C,#9A3412);box-shadow:0 6px 18px rgba(249,115,22,.2)}
+.dashboard-hero>.btn:hover{background:linear-gradient(135deg,#D64F12,#A83A10);box-shadow:0 8px 23px rgba(249,115,22,.28)}
+.card,.stat{border-color:var(--line-soft);box-shadow:0 8px 28px rgba(17,19,24,.04)}
+.card h3{color:#202127}
+.stats{gap:13px;margin-bottom:20px}
+.stat{min-height:128px;padding:17px 18px 16px 20px;border-radius:13px;box-shadow:0 5px 20px rgba(17,19,24,.035)}
+.stat::before{position:absolute;top:18px;right:17px;width:9px;height:9px;border:2px solid #FDBA74;border-radius:50%;background:#fff;content:""}
+.stat:first-child{border-color:#25262d;background:linear-gradient(145deg,#111318,#1F2026);box-shadow:0 9px 24px rgba(11,11,15,.13)}
+.stat:first-child::before{border-color:#FB923C;background:#F97316;box-shadow:0 0 13px rgba(249,115,22,.4)}
+.stat:first-child .stat-label,.stat:first-child .stat-small{color:#c5c6cc}
+.stat:first-child .stat-value{color:#fff}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.stat-value{font-size:28px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat-small{font-size:11px}
+.dashboard-page>.grid.grid-2>.card:first-child{position:relative;overflow:hidden;border-color:#25262d;background:linear-gradient(140deg,#111318,#1F2026);color:#F8FAFC;box-shadow:0 12px 28px rgba(11,11,15,.11)}
+.dashboard-page>.grid.grid-2>.card:first-child::after{position:absolute;right:-42px;top:-55px;width:190px;height:190px;border:1px solid rgba(251,146,60,.16);border-radius:50%;box-shadow:0 0 0 22px rgba(249,115,22,.025),0 0 0 46px rgba(249,115,22,.02);content:""}
+.dashboard-page>.grid.grid-2>.card:first-child h3{color:#fff}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row{position:relative;z-index:1;border-color:rgba(255,255,255,.1)}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row span{color:#c5c6cc}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row strong{color:#fff}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row:first-of-type strong{color:#FB923C;font-size:16px}
+.dashboard-page>.grid.grid-2>.card:last-child,.dashboard-page>.card:last-child{background:rgba(255,255,255,.96)}
+.dashboard-page .progress{background:#e9eaed}
+.dashboard-page #progressDraft{background:#737373!important}
+.dashboard-page #progressReview{background:#b45309!important}
+.dashboard-page #progressApproved{background:#C2410C!important}
+.dashboard-page #progressWon{background:#15803D!important}
+.section-title:has(>h3){margin-bottom:14px}
+.btn-primary{background:linear-gradient(135deg,#C2410C,#9A3412);box-shadow:0 3px 10px rgba(194,65,12,.17)}
+.btn-primary:hover{background:linear-gradient(135deg,#D64F12,#A83A10);box-shadow:0 5px 15px rgba(194,65,12,.24)}
+.btn-secondary{border-color:#dfe1e5;color:#34363d}
+.btn-secondary:hover{border-color:#FDBA74;background:#FFF7ED;color:#9A3412}
+.btn-success{background:#15803D}
+.btn,.nav-btn,.stat{transition-duration:.18s;transition-timing-function:ease-out}
+.field input,.field select,.field textarea{border-color:#dfe1e5;border-radius:10px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#C2410C;box-shadow:0 0 0 4px rgba(249,115,22,.1)}
+.steps{gap:8px;padding:4px 0 9px}
+.step{position:relative;min-width:122px;border:1px solid #e5e7eb;border-radius:9px;background:#f1f2f4;color:#64666f;font-size:11px;letter-spacing:.02em}
+.step.active{border-color:#9A3412;background:linear-gradient(135deg,#C2410C,#9A3412);color:#fff;box-shadow:0 4px 13px rgba(194,65,12,.2)}
+.step.completed{border-color:#fed7aa;background:#FFF7ED;color:#9A3412}
+.table-wrap{border-color:#e7e8eb;border-radius:12px;background:#fff}
+table{font-size:12px}
+th{background:#f4f5f7;color:#4f5159;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+td{color:#363840}
+tbody tr:hover td{background:#fff8f1}
+.badge{font-size:10px;letter-spacing:.01em}
+.summary-box:has(#finalPrice){position:relative;overflow:hidden;padding:18px;border-color:#25262d;background:linear-gradient(140deg,#111318,#1F2026);color:#F8FAFC;box-shadow:0 14px 34px rgba(11,11,15,.13)}
+.summary-box:has(#finalPrice)::before{position:absolute;right:-25px;top:-45px;width:145px;height:145px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.19),transparent 68%);content:"";pointer-events:none}
+.summary-box:has(#finalPrice) .summary-row{position:relative;z-index:1;border-color:rgba(255,255,255,.1)}
+.summary-box:has(#finalPrice) .summary-row span{color:#c5c6cc}
+.summary-box:has(#finalPrice) .summary-row strong{color:#fff}
+.summary-box:has(#finalPrice) .summary-row:last-child{margin:12px -18px -18px;padding:17px 18px;border-top:1px solid rgba(251,146,60,.25);border-radius:0 0 11px 11px;background:linear-gradient(105deg,rgba(249,115,22,.16),rgba(249,115,22,.05))}
+.summary-box:has(#finalPrice) .summary-row:last-child span{color:#fff;font-weight:650}
+.summary-total{color:#FB923C!important;font-size:25px;font-variant-numeric:tabular-nums;line-height:1.2}
+.summary-row strong{font-variant-numeric:tabular-nums}
+.page:not(.dashboard-page) .card>h3{display:flex;align-items:center;gap:10px}
+.page:not(.dashboard-page) .card>h3::before{width:3px;height:16px;flex:0 0 3px;border-radius:3px;background:linear-gradient(180deg,#FB923C,#C2410C);content:""}
+.table-wrap .btn{min-height:30px;padding:6px 9px;border-radius:7px;font-size:11px}
+.report-preview{border-color:#e5e7eb;box-shadow:0 10px 32px rgba(17,19,24,.07)}
+.modal-content{border-radius:16px;animation:modal-arrive .18s ease-out}
+@keyframes modal-arrive{from{opacity:0;transform:translateY(6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(min-width:1300px){.dashboard-page>.grid.grid-2{grid-template-columns:1.15fr .85fr}}
+@media(min-width:761px) and (max-width:1050px){.dashboard-hero{padding:22px}.stat{padding-right:14px;padding-left:16px}.stat-value{font-size:24px}}
+@media(max-width:760px){
+  .sidebar{background:linear-gradient(180deg,#0B0B0F,#111318);border-color:rgba(255,255,255,.08)}
+  .dashboard-hero{align-items:flex-start;min-height:0;padding:20px 18px}
+  .dashboard-hero h2{font-size:21px!important}
+  .dashboard-hero>.btn{align-self:flex-start}
+  .dashboard-page>.grid.grid-2{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:520px){
+  .dashboard-hero{gap:14px}
+  .dashboard-hero>.btn{width:100%}
+  .dashboard-hero .muted{max-width:38ch}
+  .stats{gap:9px}.stat{min-height:112px;padding:14px}.stat-value{font-size:24px}
+  .steps{gap:6px}.step{flex-basis:112px;min-width:112px;padding:10px 8px}
+  .summary-total{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media print{
+  body{background:#fff!important}
+  .dashboard-page,.sidebar{background:#fff!important;background-image:none!important;color:#171717!important}
+  .report-preview{box-shadow:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<button class="sidebar-backdrop" id="sidebarBackdrop" type="button" aria-label="Close navigation"></button>
+<aside class="sidebar" id="app-sidebar">
+
+  <div class="logo">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M4 19V8l8-4 8 4v11M4 8l8 4 8-4M12 12v8M8 6l8 4M8 16h2m4 0h2"/></svg>
+    </span>
+    <div class="logo-copy">
+      <h1>Estimation Hub</h1>
+      <span>Internal Estimation & Quotation</span>
+    </div>
+  </div>
+
+  <button class="nav-btn active" data-page="dashboard" onclick="showPage('dashboard')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg></span>
+    Dashboard
+  </button>
+
+  <div class="nav-section">Estimation</div>
+
+  <button class="nav-btn" data-page="newEstimate" onclick="showPage('newEstimate')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></span>
+    + New Estimate
+  </button>
+
+  <button class="nav-btn" data-page="estimates" onclick="showPage('estimates')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4h10l3 3v13H8zM18 4v4h4M4 8v12h12M11 12h7m-7 4h7"/></svg></span>
+    Estimates
+  </button>
+
+  <button class="nav-btn" data-page="clients" onclick="showPage('clients')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1zm13-9a3 3 0 1 0-1-5.8M18 14a5 5 0 0 1 3 4.6v1"/></svg></span>
+    Clients
+  </button>
+
+  <div class="nav-section">Reports</div>
+
+  <button class="nav-btn" data-page="reports" onclick="showPage('reports')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17M8 15l4-4 3 2 5-6"/><path d="M16 7h4v4"/></svg></span>
+    Reports & Analytics
+  </button>
+
+  <button class="nav-btn" data-page="quotePrintPage" onclick="showPage('quotePrintPage')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v5h5M9 13h7m-7 4h7"/></svg></span>
+    Client Quotation
+  </button>
+
+  <button class="nav-btn" data-page="internalPrintPage" onclick="showPage('internalPrintPage')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8m-8 4h8m-8 4h5"/></svg></span>
+    Internal Report
+  </button>
+
+  <div class="nav-section">Administration</div>
+
+  <button class="nav-btn" data-page="rates" onclick="showPage('rates')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17M7 15l4-4 3 2 5-6"/><circle cx="7" cy="15" r=".7"/><circle cx="11" cy="11" r=".7"/><circle cx="14" cy="13" r=".7"/><circle cx="19" cy="7" r=".7"/></svg></span>
+    Rate Library
+  </button>
+
+  <button class="nav-btn" data-page="settings" onclick="showPage('settings')">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.8-.6a8 8 0 0 1-1.5.9l-.3 1.9h-2.8l-.3-1.9a8 8 0 0 1-1.5-.9l-1.8.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.8.6a8 8 0 0 1 1.5-.9l.3-1.9h2.8l.3 1.9a8 8 0 0 1 1.5.9l1.8-.6 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.7Z"/></svg></span>
+    Settings
+  </button>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+  <header class="topbar">
+    <div class="header-context">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-controls="app-sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="header-copy">
+        <div class="breadcrumb">Clove / Estimation workspace</div>
+        <h2 id="pageTitle">Dashboard</h2>
+      </div>
+    </div>
+    <div class="user-badge">
+      Internal Use • Estimation Department
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ================= DASHBOARD ================= -->
+    <section id="dashboard" class="page active dashboard-page">
+
+      <div class="section-title dashboard-hero">
+        <div>
+          <h2 style="margin:0">Quotation Command Center</h2>
+          <div class="muted">Monitor estimates, project opportunities, and commercial performance.</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="startNewEstimate()">
+          + New Estimate
+        </button>
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">Total Estimates</div>
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-small">All saved estimates</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value" id="statPending">0</div>
+          <div class="stat-small">Awaiting action</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Won</div>
+          <div class="stat-value" id="statWon">0</div>
+          <div class="stat-small">Projects won</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Lost</div>
+          <div class="stat-value" id="statLost">0</div>
+          <div class="stat-small">Projects lost</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Win Rate</div>
+          <div class="stat-value" id="statWinRate">0%</div>
+          <div class="stat-small">Won / completed opportunities</div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="card">
+          <h3>Quotation Summary</h3>
+
+          <div class="summary-row">
+            <span>Total quoted value</span>
+            <strong id="dashboardQuoted">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Total estimated hours</span>
+            <strong id="dashboardHours">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Average quotation</span>
+            <strong id="dashboardAverage">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Average project hours</span>
+            <strong id="dashboardAverageHours">0</strong>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Status Distribution</h3>
+
+          <div style="margin-bottom:12px">
+            Draft
+            <div class="progress">
+              <div id="progressDraft" class="progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px">
+            Under Review
+            <div class="progress">
+              <div id="progressReview" class="progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px">
+            Approved / Sent
+            <div class="progress">
+              <div id="progressApproved" class="progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div>
+            Won
+            <div class="progress">
+              <div id="progressWon" class="progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h3>Recent Estimates</h3>
+          <button class="btn btn-secondary" onclick="showPage('estimates')">
+            View All
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Estimate</th>
+                <th>Project</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Hours</th>
+                <th>Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody id="dashboardTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ================= NEW ESTIMATE ================= -->
+    <section id="newEstimate" class="page">
+
+      <div class="section-title">
+        <div>
+          <h2 style="margin:0">New Project Estimate</h2>
+          <div class="muted">
+            Build an internal estimate and generate a client quotation.
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-secondary" onclick="resetEstimate()">
+            Reset
+          </button>
+
+          <button class="btn btn-primary" onclick="saveEstimate()">
+            Save Estimate
+          </button>
+        </div>
+      </div>
+
+      <div class="steps">
+
+        <div class="step active" id="step1">1. Project</div>
+        <div class="step" id="step2">2. Scope</div>
+        <div class="step" id="step3">3. Deliverables</div>
+        <div class="step" id="step4">4. Estimate</div>
+        <div class="step" id="step5">5. Pricing</div>
+        <div class="step" id="step6">6. Review</div>
+
+      </div>
+
+
+      <!-- STEP 1 -->
+      <div id="estimateStep1">
+
+        <div class="card">
+          <h3>Project Information</h3>
+
+          <div class="grid grid-3">
+
+            <div class="field">
+              <label>Project Number *</label>
+              <input id="projectNumber" placeholder="e.g. 67204">
+            </div>
+
+            <div class="field">
+              <label>Project Name *</label>
+              <input id="projectName" placeholder="e.g. Bus Áras">
+            </div>
+
+            <div class="field">
+              <label>Client Company *</label>
+              <input id="clientCompany" placeholder="Client company">
+            </div>
+
+            <div class="field">
+              <label>Client Contact</label>
+              <input id="clientContact" placeholder="Contact person">
+            </div>
+
+            <div class="field">
+              <label>Country</label>
+              <input id="country" placeholder="Ireland">
+            </div>
+
+            <div class="field">
+              <label>Project Location</label>
+              <input id="projectLocation" placeholder="Dublin">
+            </div>
+
+            <div class="field">
+              <label>Estimator</label>
+              <input id="estimator" placeholder="Estimator name">
+            </div>
+
+            <div class="field">
+              <label>Expected Start</label>
+              <input id="expectedStart" type="date">
+            </div>
+
+            <div class="field">
+              <label>Required Delivery</label>
+              <input id="requiredDelivery" type="date">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card">
+
+          <h3>Project Characteristics</h3>
+
+          <div class="grid grid-3">
+
+            <div class="field">
+              <label>Building Type</label>
+
+              <select id="buildingType">
+                <option>Commercial</option>
+                <option>Residential</option>
+                <option>Industrial</option>
+                <option>Healthcare</option>
+                <option>Education</option>
+                <option>Infrastructure</option>
+                <option>Heritage</option>
+                <option>Other</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Project Area</label>
+              <input id="projectArea" type="number" min="0" value="0">
+            </div>
+
+            <div class="field">
+              <label>Area Unit</label>
+
+              <select id="areaUnit">
+                <option>sq ft</option>
+                <option>sq m</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Number of Floors</label>
+              <input id="floors" type="number" min="0" value="1">
+            </div>
+
+            <div class="field">
+              <label>Number of Buildings</label>
+              <input id="buildings" type="number" min="1" value="1">
+            </div>
+
+            <div class="field">
+              <label>Number of Rooms / Areas</label>
+              <input id="rooms" type="number" min="0" value="0">
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="nextStep(2)">
+            Continue →
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- STEP 2 -->
+      <div id="estimateStep2" style="display:none">
+
+        <div class="card">
+
+          <h3>Services Required</h3>
+
+          <div class="checkbox-grid">
+
+            <label class="check">
+              <input type="checkbox" value="Scan-to-BIM" class="serviceCheck">
+              Scan-to-BIM
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Scan-to-CAD" class="serviceCheck">
+              Scan-to-CAD
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="CAD to BIM" class="serviceCheck">
+              CAD → BIM
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Point Cloud Processing" class="serviceCheck">
+              Point Cloud Processing
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Geospatial" class="serviceCheck">
+              Geospatial
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="2D to 3D" class="serviceCheck">
+              2D → 3D
+            </label>
+
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>BIM / Modelling Scope</h3>
+
+          <div class="grid grid-3">
+
+            <div class="field">
+              <label>LOD</label>
+
+              <select id="lod">
+                <option value="200">LOD 200</option>
+                <option value="300" selected>LOD 300</option>
+                <option value="350">LOD 350</option>
+                <option value="400">LOD 400</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Point Cloud Availability</label>
+
+              <select id="pointCloudAvailable">
+                <option>Available</option>
+                <option>Not Available</option>
+                <option>Partial</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Point Cloud Quality</label>
+
+              <select id="pointCloudQuality">
+                <option value="Excellent">Excellent</option>
+                <option value="Good" selected>Good</option>
+                <option value="Average">Average</option>
+                <option value="Poor">Poor</option>
+                <option value="Very Poor">Very Poor</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Project Complexity</label>
+
+              <select id="complexity">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+                <option value="Very High">Very High</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Existing CAD Available?</label>
+
+              <select id="existingCAD">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Existing Revit Available?</label>
+
+              <select id="existingRevit">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Disciplines</h3>
+
+          <div class="checkbox-grid">
+
+            <label class="check">
+              <input type="checkbox" value="Architecture" class="disciplineCheck">
+              Architecture
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Structure" class="disciplineCheck">
+              Structure
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Mechanical" class="disciplineCheck">
+              Mechanical
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Electrical" class="disciplineCheck">
+              Electrical
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Plumbing" class="disciplineCheck">
+              Plumbing
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Fire Protection" class="disciplineCheck">
+              Fire Protection
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Civil" class="disciplineCheck">
+              Civil
+            </label>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary" onclick="nextStep(1)">
+            ← Back
+          </button>
+
+          <button class="btn btn-primary" onclick="nextStep(3)">
+            Continue →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- STEP 3 -->
+      <div id="estimateStep3" style="display:none">
+
+        <div class="card">
+
+          <h3>Deliverables</h3>
+
+          <div class="checkbox-grid">
+
+            <label class="check">
+              <input type="checkbox" value="Revit Model" class="deliverableCheck">
+              Revit Model
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="CAD Drawings" class="deliverableCheck">
+              CAD Drawings
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Floor Plans" class="deliverableCheck">
+              Floor Plans
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Sections" class="deliverableCheck">
+              Sections
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Elevations" class="deliverableCheck">
+              Elevations
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="RCP" class="deliverableCheck">
+              RCP
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Details" class="deliverableCheck">
+              Details
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Schedules" class="deliverableCheck">
+              Schedules
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="QA/QC Report" class="deliverableCheck">
+              QA/QC Report
+            </label>
+
+            <label class="check">
+              <input type="checkbox" value="Clash Report" class="deliverableCheck">
+              Clash Report
+            </label>
+
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Scope Notes</h3>
+
+          <div class="grid grid-2">
+
+            <div class="field">
+              <label>Scope Description</label>
+              <textarea id="scopeDescription"
+                placeholder="Describe the project scope..."></textarea>
+            </div>
+
+            <div class="field">
+              <label>Estimator Notes</label>
+              <textarea id="estimatorNotes"
+                placeholder="Internal notes, risks, special conditions..."></textarea>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Assumptions</h3>
+
+          <textarea id="assumptions" style="width:100%;min-height:130px">Point cloud data will be supplied by the client in an accessible format.
+Modelling will be based on information available in the supplied data.
+Items that cannot be verified from the available information will be treated according to agreed assumptions.
+Any additional scope outside the agreed deliverables may be treated as a variation.</textarea>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Exclusions</h3>
+
+          <textarea id="exclusions" style="width:100%;min-height:130px">Design services are excluded unless specifically mentioned.
+Structural analysis and engineering calculations are excluded.
+Additional survey/site verification is excluded.
+Additional deliverables outside the agreed scope are excluded.</textarea>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary" onclick="nextStep(2)">
+            ← Back
+          </button>
+
+          <button class="btn btn-primary" onclick="calculateEstimate();nextStep(4)">
+            Calculate Estimate →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- STEP 4 -->
+      <div id="estimateStep4" style="display:none">
+
+        <div class="alert alert-info">
+          The values below are generated using the current Rate Library.
+          These are example/default rates and should be replaced with your company's approved rates.
+        </div>
+
+        <div class="card">
+
+          <div class="section-title">
+            <h3>Automatic Estimation</h3>
+
+            <button class="btn btn-secondary" onclick="calculateEstimate()">
+              Recalculate
+            </button>
+          </div>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Work Package</th>
+                  <th>Basis</th>
+                  <th>System Hours</th>
+                  <th>Adjustment</th>
+                  <th>Final Hours</th>
+                </tr>
+              </thead>
+
+              <tbody id="estimateBreakdown"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        <div class="grid grid-3">
+
+          <div class="card">
+            <h3>Total Modelling Hours</h3>
+            <div class="stat-value" id="totalModelHours">0</div>
+          </div>
+
+          <div class="card">
+            <h3>QA/QC Hours</h3>
+            <div class="stat-value" id="totalQAHours">0</div>
+          </div>
+
+          <div class="card">
+            <h3>PM / Coordination</h3>
+            <div class="stat-value" id="totalPMHours">0</div>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Estimator Adjustment</h3>
+
+          <div class="grid grid-2">
+
+            <div class="field">
+              <label>Additional / Reduced Hours</label>
+              <input id="manualAdjustment"
+                     type="number"
+                     value="0"
+                     step="1"
+                     onchange="calculateEstimate()">
+            </div>
+
+            <div class="field">
+              <label>Reason</label>
+              <input id="adjustmentReason"
+                     placeholder="e.g. Complex geometry">
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary" onclick="nextStep(3)">
+            ← Back
+          </button>
+
+          <button class="btn btn-primary" onclick="calculateEstimate();nextStep(5)">
+            Continue to Pricing →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- STEP 5 -->
+      <div id="estimateStep5" style="display:none">
+
+        <div class="card">
+
+          <h3>Internal Cost & Pricing</h3>
+
+          <div class="grid grid-3">
+
+            <div class="field">
+              <label>Currency</label>
+
+              <select id="currency" onchange="calculatePricing()">
+                <option>EUR</option>
+                <option>USD</option>
+                <option>GBP</option>
+                <option>CAD</option>
+                <option>AUD</option>
+                <option>NZD</option>
+                <option>INR</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Internal Labour Rate / Hour</label>
+              <input id="labourRate"
+                     type="number"
+                     min="0"
+                     value="15"
+                     onchange="calculatePricing()">
+            </div>
+
+            <div class="field">
+              <label>Contingency %</label>
+              <input id="contingencyPercent"
+                     type="number"
+                     min="0"
+                     value="5"
+                     onchange="calculatePricing()">
+            </div>
+
+            <div class="field">
+              <label>Other Costs</label>
+              <input id="otherCosts"
+                     type="number"
+                     min="0"
+                     value="0"
+                     onchange="calculatePricing()">
+            </div>
+
+            <div class="field">
+              <label>Markup %</label>
+              <input id="markupPercent"
+                     type="number"
+                     min="0"
+                     value="25"
+                     onchange="calculatePricing()">
+            </div>
+
+            <div class="field">
+              <label>Target Duration (working days)</label>
+              <input id="duration"
+                     type="number"
+                     min="1"
+                     value="30">
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Pricing Summary</h3>
+
+          <div class="summary-box">
+
+            <div class="summary-row">
+              <span>Total Hours</span>
+              <strong id="priceHours">0</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Internal Labour Cost</span>
+              <strong id="priceLabour">0</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Contingency</span>
+              <strong id="priceContingency">0</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Other Costs</span>
+              <strong id="priceOther">0</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Internal Cost Basis</span>
+              <strong id="priceCostBasis">0</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Markup</span>
+              <strong id="priceMarkup">0</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Final Client Price</span>
+              <strong class="summary-total" id="finalPrice">0</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary" onclick="nextStep(4)">
+            ← Back
+          </button>
+
+          <button class="btn btn-primary" onclick="calculatePricing();nextStep(6)">
+            Review Estimate →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- STEP 6 -->
+      <div id="estimateStep6" style="display:none">
+
+        <div class="card">
+
+          <h3>Final Review</h3>
+
+          <div id="finalReview"></div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Estimate Status</h3>
+
+          <div class="grid grid-3">
+
+            <div class="field">
+              <label>Status</label>
+
+              <select id="estimateStatus">
+                <option>Draft</option>
+                <option>Under Review</option>
+                <option>Approved</option>
+                <option>Sent</option>
+                <option>Won</option>
+                <option>Lost</option>
+                <option>On Hold</option>
+                <option>Cancelled</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Lost Reason</label>
+
+              <select id="lostReason">
+                <option value="">Not applicable</option>
+                <option>Price</option>
+                <option>Timeline</option>
+                <option>Scope</option>
+                <option>Client chose another supplier</option>
+                <option>No response</option>
+                <option>Project cancelled</option>
+                <option>Existing supplier</option>
+                <option>Technical capability</option>
+                <option>Other</option>
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Client Notes</label>
+              <input id="clientNotes"
+                     placeholder="Optional internal note">
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary" onclick="nextStep(5)">
+            ← Back
+          </button>
+
+          <button class="btn btn-success" onclick="saveEstimate()">
+            Save Estimate
+          </button>
+
+          <button class="btn btn-primary" onclick="saveEstimate();showPage('quotePrintPage')">
+            Save & View Quote
+          </button>
+
+          <button class="btn btn-warning" onclick="saveEstimate();showPage('internalPrintPage')">
+            Save & View Internal Report
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= ESTIMATES ================= -->
+    <section id="estimates" class="page">
+
+      <div class="section-title">
+
+        <div>
+          <h2 style="margin:0">Estimates</h2>
+          <div class="muted">All project estimates and quotations.</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="startNewEstimate()">
+          + New Estimate
+        </button>
+
+      </div>
+
+      <div class="card">
+
+        <div class="grid grid-3">
+
+          <div class="field">
+            <label>Search</label>
+            <input id="estimateSearch"
+                   placeholder="Project, client or estimate number"
+                   oninput="renderEstimates()">
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+
+            <select id="estimateFilterStatus"
+                    onchange="renderEstimates()">
+              <option value="">All Statuses</option>
+              <option>Draft</option>
+              <option>Under Review</option>
+              <option>Approved</option>
+              <option>Sent</option>
+              <option>Won</option>
+              <option>Lost</option>
+              <option>On Hold</option>
+              <option>Cancelled</option>
+            </select>
+
+          </div>
+
+          <div class="field">
+            <label>Service</label>
+
+            <select id="estimateFilterService"
+                    onchange="renderEstimates()">
+              <option value="">All Services</option>
+              <option>Scan-to-BIM</option>
+              <option>Scan-to-CAD</option>
+              <option>CAD to BIM</option>
+              <option>Geospatial</option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Estimate</th>
+                <th>Project</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Hours</th>
+                <th>Quotation</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="estimatesTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CLIENTS ================= -->
+    <section id="clients" class="page">
+
+      <div class="section-title">
+        <div>
+          <h2 style="margin:0">Clients</h2>
+          <div class="muted">Client information from saved estimates.</div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Country</th>
+                <th>Projects</th>
+                <th>Quoted Value</th>
+                <th>Won</th>
+              </tr>
+            </thead>
+
+            <tbody id="clientsTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= REPORTS ================= -->
+    <section id="reports" class="page">
+
+      <div class="section-title">
+
+        <div>
+          <h2 style="margin:0">Reports & Analytics</h2>
+          <div class="muted">
+            Historical estimation and quotation information.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="card">
+          <h3>Win / Loss</h3>
+
+          <div class="summary-row">
+            <span>Won</span>
+            <strong id="reportWon">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Lost</span>
+            <strong id="reportLost">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Win Rate</span>
+            <strong id="reportWinRate">0%</strong>
+          </div>
+
+        </div>
+
+        <div class="card">
+          <h3>Financial Summary</h3>
+
+          <div class="summary-row">
+            <span>Total Quoted</span>
+            <strong id="reportQuoted">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Average Quote</span>
+            <strong id="reportAverage">0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Total Hours Estimated</span>
+            <strong id="reportHours">0</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Loss Reasons</h3>
+
+        <div id="lossReasons"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= RATES ================= -->
+    <section id="rates" class="page">
+
+      <div class="section-title">
+
+        <div>
+          <h2 style="margin:0">Rate Library</h2>
+          <div class="muted">
+            Configure the internal estimation rules.
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveRates()">
+          Save Rates
+        </button>
+
+      </div>
+
+      <div class="alert alert-warning">
+        The rates below are illustrative defaults. Replace them with
+        approved company rates based on historical project data.
+      </div>
+
+      <div class="card">
+
+        <h3>Base Hours per sq ft</h3>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Discipline</th>
+                <th>LOD 200</th>
+                <th>LOD 300</th>
+                <th>LOD 350</th>
+                <th>LOD 400</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>Architecture</td>
+                <td><input class="rate-input" data-key="arch200" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="arch300" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="arch350" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="arch400" type="number" step="0.0001"></td>
+              </tr>
+
+              <tr>
+                <td>Structure</td>
+                <td><input class="rate-input" data-key="str200" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="str300" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="str350" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="str400" type="number" step="0.0001"></td>
+              </tr>
+
+              <tr>
+                <td>Mechanical</td>
+                <td><input class="rate-input" data-key="mech200" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="mech300" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="mech350" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="mech400" type="number" step="0.0001"></td>
+              </tr>
+
+              <tr>
+                <td>Electrical</td>
+                <td><input class="rate-input" data-key="elec200" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="elec300" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="elec350" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="elec400" type="number" step="0.0001"></td>
+              </tr>
+
+              <tr>
+                <td>Plumbing</td>
+                <td><input class="rate-input" data-key="plumb200" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="plumb300" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="plumb350" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="plumb400" type="number" step="0.0001"></td>
+              </tr>
+
+              <tr>
+                <td>Fire Protection</td>
+                <td><input class="rate-input" data-key="fire200" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="fire300" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="fire350" type="number" step="0.0001"></td>
+                <td><input class="rate-input" data-key="fire400" type="number" step="0.0001"></td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Adjustment Factors</h3>
+
+        <div class="grid grid-2">
+
+          <div class="field">
+            <label>Excellent Point Cloud</label>
+            <input id="ratePCExcellent" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Good Point Cloud</label>
+            <input id="ratePCGood" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Average Point Cloud</label>
+            <input id="ratePCAverage" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Poor Point Cloud</label>
+            <input id="ratePCPoor" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Very Poor Point Cloud</label>
+            <input id="ratePCVeryPoor" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Low Complexity</label>
+            <input id="rateComplexLow" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Medium Complexity</label>
+            <input id="rateComplexMedium" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>High Complexity</label>
+            <input id="rateComplexHigh" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>Very High Complexity</label>
+            <input id="rateComplexVeryHigh" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>QA/QC Percentage</label>
+            <input id="rateQA" type="number" step="0.1">
+          </div>
+
+          <div class="field">
+            <label>Project Management Percentage</label>
+            <input id="ratePM" type="number" step="0.1">
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= SETTINGS ================= -->
+    <section id="settings" class="page">
+
+      <div class="section-title">
+        <div>
+          <h2 style="margin:0">Settings</h2>
+          <div class="muted">Company and application settings.</div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <h3>Company Information</h3>
+
+        <div class="grid grid-2">
+
+          <div class="field">
+            <label>Company Name</label>
+            <input id="companyName">
+          </div>
+
+          <div class="field">
+            <label>Company Email</label>
+            <input id="companyEmail">
+          </div>
+
+          <div class="field">
+            <label>Company Website</label>
+            <input id="companyWebsite">
+          </div>
+
+          <div class="field">
+            <label>Company Address</label>
+            <input id="companyAddress">
+          </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn btn-primary" onclick="saveSettings()">
+          Save Company Settings
+        </button>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Data Management</h3>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary" onclick="exportData()">
+            Export Backup
+          </button>
+
+          <label class="btn btn-secondary">
+            Import Backup
+            <input type="file"
+                   id="importFile"
+                   accept=".json"
+                   style="display:none"
+                   onchange="importData(event)">
+          </label>
+
+          <button class="btn btn-danger" onclick="clearAllData()">
+            Delete All Local Data
+          </button>
+
+        </div>
+
+        <br>
+
+        <div class="alert alert-warning">
+          This first version stores information in this browser's local storage.
+          Do not use this version as the final multi-user company database.
+          Move the application to Supabase/PostgreSQL before production use.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CLIENT QUOTE ================= -->
+    <section id="quotePrintPage" class="page">
+
+      <div class="no-print actions" style="margin-bottom:20px">
+
+        <button class="btn btn-secondary" onclick="showPage('dashboard')">
+          ← Dashboard
+        </button>
+
+        <button class="btn btn-primary" onclick="window.print()">
+          Print / Save as PDF
+        </button>
+
+      </div>
+
+      <div class="report-preview" id="quoteDocument"></div>
+
+    </section>
+
+
+    <!-- ================= INTERNAL REPORT ================= -->
+    <section id="internalPrintPage" class="page">
+
+      <div class="no-print actions" style="margin-bottom:20px">
+
+        <button class="btn btn-secondary" onclick="showPage('dashboard')">
+          ← Dashboard
+        </button>
+
+        <button class="btn btn-primary" onclick="window.print()">
+          Print / Save as PDF
+        </button>
+
+      </div>
+
+      <div class="report-preview" id="internalDocument"></div>
+
+    </section>
+
+  </div>
+
+</main>
+</div>
+
+
+<script>
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const STORAGE_ESTIMATES = "clove_estimates_v1";
+const STORAGE_RATES = "clove_rates_v1";
+const STORAGE_SETTINGS = "clove_settings_v1";
+
+let estimates = JSON.parse(localStorage.getItem(STORAGE_ESTIMATES) || "[]");
+
+let rates = JSON.parse(localStorage.getItem(STORAGE_RATES) || "null");
+
+let settings = JSON.parse(localStorage.getItem(STORAGE_SETTINGS) || "null");
+
+
+/* =========================================================
+   DEFAULT RATES
+   THESE ARE EXAMPLE VALUES ONLY
+========================================================= */
+
+if(!rates){
+
+  rates = {
+
+    arch200:0.004,
+    arch300:0.008,
+    arch350:0.010,
+    arch400:0.013,
+
+    str200:0.003,
+    str300:0.005,
+    str350:0.007,
+    str400:0.009,
+
+    mech200:0.004,
+    mech300:0.009,
+    mech350:0.011,
+    mech400:0.014,
+
+    elec200:0.003,
+    elec300:0.007,
+    elec350:0.009,
+    elec400:0.012,
+
+    plumb200:0.003,
+    plumb300:0.006,
+    plumb350:0.008,
+    plumb400:0.010,
+
+    fire200:0.003,
+    fire300:0.006,
+    fire350:0.008,
+    fire400:0.010,
+
+    pcExcellent:0.90,
+    pcGood:1.00,
+    pcAverage:1.15,
+    pcPoor:1.30,
+    pcVeryPoor:1.50,
+
+    complexLow:0.90,
+    complexMedium:1.00,
+    complexHigh:1.20,
+    complexVeryHigh:1.40,
+
+    qa:10,
+    pm:5
+
+  };
+
+  localStorage.setItem(STORAGE_RATES,JSON.stringify(rates));
+}
+
+
+if(!settings){
+
+  settings = {
+    companyName:"Your Company Name",
+    companyEmail:"",
+    companyWebsite:"",
+    companyAddress:""
+  };
+
+  localStorage.setItem(STORAGE_SETTINGS,JSON.stringify(settings));
+}
+
+
+/* =========================================================
+   CURRENT ESTIMATE
+========================================================= */
+
+let currentEstimate = {
+  breakdown:[],
+  totalHours:0,
+  modelHours:0,
+  qaHours:0,
+  pmHours:0,
+  internalLabourCost:0,
+  contingency:0,
+  otherCosts:0,
+  costBasis:0,
+  markup:0,
+  finalPrice:0
+};
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+const pageNames = {
+  dashboard:"Dashboard",
+  newEstimate:"New Estimate",
+  estimates:"Estimates",
+  clients:"Clients",
+  reports:"Reports & Analytics",
+  rates:"Rate Library",
+  settings:"Settings",
+  quotePrintPage:"Client Quotation",
+  internalPrintPage:"Internal Report"
+};
+
+function showPage(id){
+
+  document.querySelectorAll(".page").forEach(p=>{
+    p.classList.remove("active");
+  });
+
+  const page=document.getElementById(id);
+
+  if(page){
+    page.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.page===id);
+  });
+
+  const title=pageNames[id] || "Estimation Hub";
+
+  document.getElementById("pageTitle").textContent=title;
+
+  if(id==="dashboard"){
+    renderDashboard();
+  }
+
+  if(id==="estimates"){
+    renderEstimates();
+  }
+
+  if(id==="clients"){
+    renderClients();
+  }
+
+  if(id==="reports"){
+    renderReports();
+  }
+
+  if(id==="rates"){
+    loadRateInputs();
+  }
+
+  if(id==="settings"){
+    loadSettings();
+  }
+
+  if(id==="quotePrintPage"){
+    renderQuote();
+  }
+
+  if(id==="internalPrintPage"){
+    renderInternalReport();
+  }
+
+}
+
+
+/* =========================================================
+   NEW ESTIMATE
+========================================================= */
+
+function startNewEstimate(){
+
+  resetEstimate();
+
+  showPage("newEstimate");
+
+  nextStep(1);
+
+}
+
+
+function resetEstimate(){
+
+  document.querySelectorAll("#newEstimate input").forEach(input=>{
+
+    if(input.type==="checkbox"){
+      input.checked=false;
+    }
+
+  });
+
+  document.querySelectorAll("#newEstimate textarea").forEach(textarea=>{
+    if(textarea.id==="assumptions"){
+      textarea.value=
+`Point cloud data will be supplied by the client in an accessible format.
+Modelling will be based on information available in the supplied data.
+Items that cannot be verified from the available information will be treated according to agreed assumptions.
+Any additional scope outside the agreed deliverables may be treated as a variation.`;
+    }
+    else if(textarea.id==="exclusions"){
+      textarea.value=
+`Design services are excluded unless specifically mentioned.
+Structural analysis and engineering calculations are excluded.
+Additional survey/site verification is excluded.
+Additional deliverables outside the agreed scope are excluded.`;
+    }
+    else{
+      textarea.value="";
+    }
+  });
+
+  document.getElementById("projectArea").value=0;
+  document.getElementById("floors").value=1;
+  document.getElementById("buildings").value=1;
+  document.getElementById("rooms").value=0;
+
+  document.getElementById("manualAdjustment").value=0;
+  document.getElementById("adjustmentReason").value="";
+
+  document.getElementById("otherCosts").value=0;
+  document.getElementById("markupPercent").value=25;
+  document.getElementById("contingencyPercent").value=5;
+  document.getElementById("labourRate").value=15;
+  document.getElementById("duration").value=30;
+
+  currentEstimate={
+    breakdown:[],
+    totalHours:0,
+    modelHours:0,
+    qaHours:0,
+    pmHours:0,
+    internalLabourCost:0,
+    contingency:0,
+    otherCosts:0,
+    costBasis:0,
+    markup:0,
+    finalPrice:0
+  };
+
+  nextStep(1);
+
+}
+
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+function nextStep(step){
+
+  for(let i=1;i<=6;i++){
+
+    const container=document.getElementById("estimateStep"+i);
+
+    if(container){
+      container.style.display=(i===step ? "block" : "none");
+    }
+
+    const stepEl=document.getElementById("step"+i);
+
+    if(stepEl){
+
+      stepEl.classList.remove("active","completed");
+
+      if(i===step){
+        stepEl.classList.add("active");
+      }
+
+      if(i<step){
+        stepEl.classList.add("completed");
+      }
+
+    }
+
+  }
+
+  if(step===6){
+    calculatePricing();
+    renderFinalReview();
+  }
+
+}
+
+
+/* =========================================================
+   GET CHECKED VALUES
+========================================================= */
+
+function checkedValues(className){
+
+  return [...document.querySelectorAll("."+className+":checked")]
+    .map(x=>x.value);
+
+}
+
+
+/* =========================================================
+   CALCULATION ENGINE
+========================================================= */
+
+function getRate(discipline,lod){
+
+  const map={
+    "Architecture":"arch",
+    "Structure":"str",
+    "Mechanical":"mech",
+    "Electrical":"elec",
+    "Plumbing":"plumb",
+    "Fire Protection":"fire"
+  };
+
+  const prefix=map[discipline];
+
+  if(!prefix){
+    return 0;
+  }
+
+  return Number(rates[prefix+lod] || 0);
+
+}
+
+
+function getPointCloudFactor(){
+
+  const value=document.getElementById("pointCloudQuality").value;
+
+  const map={
+    "Excellent":rates.pcExcellent,
+    "Good":rates.pcGood,
+    "Average":rates.pcAverage,
+    "Poor":rates.pcPoor,
+    "Very Poor":rates.pcVeryPoor
+  };
+
+  return Number(map[value] || 1);
+
+}
+
+
+function getComplexityFactor(){
+
+  const value=document.getElementById("complexity").value;
+
+  const map={
+    "Low":rates.complexLow,
+    "Medium":rates.complexMedium,
+    "High":rates.complexHigh,
+    "Very High":rates.complexVeryHigh
+  };
+
+  return Number(map[value] || 1);
+
+}
+
+
+function calculateEstimate(){
+
+  const area=Number(document.getElementById("projectArea").value)||0;
+
+  const floors=Number(document.getElementById("floors").value)||1;
+
+  const buildings=Number(document.getElementById("buildings").value)||1;
+
+  const lod=document.getElementById("lod").value;
+
+  const disciplines=checkedValues("disciplineCheck");
+
+  const pcFactor=getPointCloudFactor();
+
+  const complexityFactor=getComplexityFactor();
+
+  let breakdown=[];
+
+  let modelHours=0;
+
+  disciplines.forEach(discipline=>{
+
+    let rate=getRate(discipline,lod);
+
+    let systemHours=area*rate;
+
+    /*
+      Multiple buildings/floors increase complexity.
+      This is deliberately simple for V1.
+      Replace with your company's actual methodology later.
+    */
+
+    let floorFactor=1+(Math.max(floors-1,0)*0.04);
+
+    let buildingFactor=1+(Math.max(buildings-1,0)*0.10);
+
+    systemHours=
+      systemHours*
+      pcFactor*
+      complexityFactor*
+      floorFactor*
+      buildingFactor;
+
+    systemHours=Math.max(0,systemHours);
+
+    breakdown.push({
+      workPackage:discipline,
+      basis:`${area.toLocaleString()} area × ${rate} hrs/unit`,
+      systemHours:systemHours,
+      adjustment:0,
+      finalHours:systemHours
+    });
+
+    modelHours+=systemHours;
+
+  });
+
+
+  /*
+    If no disciplines are selected,
+    use a warning rather than silently generating a misleading estimate.
+  */
+
+  const manualAdjustment=
+    Number(document.getElementById("manualAdjustment").value)||0;
+
+  const adjustmentReason=
+    document.getElementById("adjustmentReason").value.trim();
+
+  if(manualAdjustment!==0){
+
+    breakdown.push({
+      workPackage:"Estimator Adjustment",
+      basis:adjustmentReason || "Manual adjustment",
+      systemHours:0,
+      adjustment:manualAdjustment,
+      finalHours:manualAdjustment
+    });
+
+  }
+
+
+  const qaHours=modelHours*(Number(rates.qa)||0)/100;
+
+  const pmHours=modelHours*(Number(rates.pm)||0)/100;
+
+  const totalHours=
+    modelHours+
+    qaHours+
+    pmHours+
+    manualAdjustment;
+
+
+  currentEstimate.breakdown=breakdown;
+  currentEstimate.modelHours=modelHours;
+  currentEstimate.qaHours=qaHours;
+  currentEstimate.pmHours=pmHours;
+  currentEstimate.totalHours=Math.max(0,totalHours);
+
+
+  renderBreakdown();
+
+  document.getElementById("totalModelHours").textContent=
+    formatNumber(modelHours);
+
+  document.getElementById("totalQAHours").textContent=
+    formatNumber(qaHours);
+
+  document.getElementById("totalPMHours").textContent=
+    formatNumber(pmHours);
+
+  calculatePricing();
+
+}
+
+
+/* =========================================================
+   BREAKDOWN DISPLAY
+========================================================= */
+
+function renderBreakdown(){
+
+  const tbody=document.getElementById("estimateBreakdown");
+
+  tbody.innerHTML="";
+
+  currentEstimate.breakdown.forEach(item=>{
+
+    const tr=document.createElement("tr");
+
+    tr.innerHTML=`
+      <td><strong>${escapeHtml(item.workPackage)}</strong></td>
+      <td>${escapeHtml(item.basis)}</td>
+      <td>${formatNumber(item.systemHours)}</td>
+      <td>${formatNumber(item.adjustment)}</td>
+      <td><strong>${formatNumber(item.finalHours)}</strong></td>
+    `;
+
+    tbody.appendChild(tr);
+
+  });
+
+}
+
+
+/* =========================================================
+   PRICING
+========================================================= */
+
+function calculatePricing(){
+
+  if(!currentEstimate.totalHours){
+    calculateEstimate();
+  }
+
+  const totalHours=currentEstimate.totalHours;
+
+  const labourRate=
+    Number(document.getElementById("labourRate").value)||0;
+
+  const contingencyPercent=
+    Number(document.getElementById("contingencyPercent").value)||0;
+
+  const otherCosts=
+    Number(document.getElementById("otherCosts").value)||0;
+
+  const markupPercent=
+    Number(document.getElementById("markupPercent").value)||0;
+
+  const labourCost=totalHours*labourRate;
+
+  const contingency=
+    (labourCost+otherCosts)*contingencyPercent/100;
+
+  const costBasis=
+    labourCost+
+    contingency+
+    otherCosts;
+
+  const markup=
+    costBasis*markupPercent/100;
+
+  const finalPrice=
+    costBasis+
+    markup;
+
+  currentEstimate.internalLabourCost=labourCost;
+  currentEstimate.contingency=contingency;
+  currentEstimate.otherCosts=otherCosts;
+  currentEstimate.costBasis=costBasis;
+  currentEstimate.markup=markup;
+  currentEstimate.finalPrice=finalPrice;
+
+
+  const currency=
+    document.getElementById("currency").value;
+
+  document.getElementById("priceHours").textContent=
+    formatNumber(totalHours);
+
+  document.getElementById("priceLabour").textContent=
+    money(labourCost,currency);
+
+  document.getElementById("priceContingency").textContent=
+    money(contingency,currency);
+
+  document.getElementById("priceOther").textContent=
+    money(otherCosts,currency);
+
+  document.getElementById("priceCostBasis").textContent=
+    money(costBasis,currency);
+
+  document.getElementById("priceMarkup").textContent=
+    money(markup,currency);
+
+  document.getElementById("finalPrice").textContent=
+    money(finalPrice,currency);
+
+}
+
+
+/* =========================================================
+   FINAL REVIEW
+========================================================= */
+
+function renderFinalReview(){
+
+  calculatePricing();
+
+  const services=checkedValues("serviceCheck");
+
+  const disciplines=checkedValues("disciplineCheck");
+
+  const deliverables=checkedValues("deliverableCheck");
+
+  const currency=document.getElementById("currency").value;
+
+  document.getElementById("finalReview").innerHTML=`
+
+    <div class="grid grid-3">
+
+      <div class="summary-box">
+        <div class="muted">Project</div>
+        <strong>${escapeHtml(document.getElementById("projectName").value)}</strong>
+      </div>
+
+      <div class="summary-box">
+        <div class="muted">Client</div>
+        <strong>${escapeHtml(document.getElementById("clientCompany").value)}</strong>
+      </div>
+
+      <div class="summary-box">
+        <div class="muted">Quotation</div>
+        <strong>${money(currentEstimate.finalPrice,currency)}</strong>
+      </div>
+
+      <div class="summary-box">
+        <div class="muted">Estimated Hours</div>
+        <strong>${formatNumber(currentEstimate.totalHours)}</strong>
+      </div>
+
+      <div class="summary-box">
+        <div class="muted">Duration</div>
+        <strong>${document.getElementById("duration").value} working days</strong>
+      </div>
+
+      <div class="summary-box">
+        <div class="muted">LOD</div>
+        <strong>LOD ${document.getElementById("lod").value}</strong>
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="summary-row">
+      <span>Services</span>
+      <strong>${services.join(", ") || "None selected"}</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Disciplines</span>
+      <strong>${disciplines.join(", ") || "None selected"}</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Deliverables</span>
+      <strong>${deliverables.join(", ") || "None selected"}</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Internal Cost</span>
+      <strong>${money(currentEstimate.costBasis,currency)}</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Client Price</span>
+      <strong class="summary-total">${money(currentEstimate.finalPrice,currency)}</strong>
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   SAVE ESTIMATE
+========================================================= */
+
+function saveEstimate(){
+
+  calculateEstimate();
+
+  calculatePricing();
+
+  const projectName=
+    document.getElementById("projectName").value.trim();
+
+  const projectNumber=
+    document.getElementById("projectNumber").value.trim();
+
+  const clientCompany=
+    document.getElementById("clientCompany").value.trim();
+
+  if(!projectName || !projectNumber || !clientCompany){
+
+    alert("Please enter Project Number, Project Name and Client Company.");
+
+    nextStep(1);
+
+    return;
+
+  }
+
+
+  const existingId=currentEstimate.editingId || null;
+
+  const estimateNumber=
+    existingId
+      ? currentEstimate.estimateNumber
+      : generateEstimateNumber();
+
+  const quoteNumber=
+    existingId
+      ? currentEstimate.quoteNumber
+      : generateQuoteNumber();
+
+
+  const data={
+
+    id:existingId || Date.now().toString(),
+
+    estimateNumber:estimateNumber,
+
+    quoteNumber:quoteNumber,
+
+    quoteVersion:existingId
+      ? currentEstimate.quoteVersion || 1
+      : 1,
+
+    projectNumber,
+
+    projectName,
+
+    clientCompany,
+
+    clientContact:
+      document.getElementById("clientContact").value,
+
+    country:
+      document.getElementById("country").value,
+
+    projectLocation:
+      document.getElementById("projectLocation").value,
+
+    estimator:
+      document.getElementById("estimator").value,
+
+    expectedStart:
+      document.getElementById("expectedStart").value,
+
+    requiredDelivery:
+      document.getElementById("requiredDelivery").value,
+
+    buildingType:
+      document.getElementById("buildingType").value,
+
+    projectArea:
+      Number(document.getElementById("projectArea").value)||0,
+
+    areaUnit:
+      document.getElementById("areaUnit").value,
+
+    floors:
+      Number(document.getElementById("floors").value)||0,
+
+    buildings:
+      Number(document.getElementById("buildings").value)||0,
+
+    rooms:
+      Number(document.getElementById("rooms").value)||0,
+
+    services:
+      checkedValues("serviceCheck"),
+
+    lod:
+      document.getElementById("lod").value,
+
+    pointCloudAvailable:
+      document.getElementById("pointCloudAvailable").value,
+
+    pointCloudQuality:
+      document.getElementById("pointCloudQuality").value,
+
+    complexity:
+      document.getElementById("complexity").value,
+
+    existingCAD:
+      document.getElementById("existingCAD").value,
+
+    existingRevit:
+      document.getElementById("existingRevit").value,
+
+    disciplines:
+      checkedValues("disciplineCheck"),
+
+    deliverables:
+      checkedValues("deliverableCheck"),
+
+    scopeDescription:
+      document.getElementById("scopeDescription").value,
+
+    estimatorNotes:
+      document.getElementById("estimatorNotes").value,
+
+    assumptions:
+      document.getElementById("assumptions").value,
+
+    exclusions:
+      document.getElementById("exclusions").value,
+
+    breakdown:
+      currentEstimate.breakdown,
+
+    modelHours:
+      currentEstimate.modelHours,
+
+    qaHours:
+      currentEstimate.qaHours,
+
+    pmHours:
+      currentEstimate.pmHours,
+
+    totalHours:
+      currentEstimate.totalHours,
+
+    labourRate:
+      Number(document.getElementById("labourRate").value)||0,
+
+    contingencyPercent:
+      Number(document.getElementById("contingencyPercent").value)||0,
+
+    otherCosts:
+      Number(document.getElementById("otherCosts").value)||0,
+
+    markupPercent:
+      Number(document.getElementById("markupPercent").value)||0,
+
+    internalLabourCost:
+      currentEstimate.internalLabourCost,
+
+    contingency:
+      currentEstimate.contingency,
+
+    costBasis:
+      currentEstimate.costBasis,
+
+    markup:
+      currentEstimate.markup,
+
+    finalPrice:
+      currentEstimate.finalPrice,
+
+    currency:
+      document.getElementById("currency").value,
+
+    duration:
+      Number(document.getElementById("duration").value)||0,
+
+    status:
+      document.getElementById("estimateStatus").value,
+
+    lostReason:
+      document.getElementById("lostReason").value,
+
+    clientNotes:
+      document.getElementById("clientNotes").value,
+
+    adjustment:
+      Number(document.getElementById("manualAdjustment").value)||0,
+
+    adjustmentReason:
+      document.getElementById("adjustmentReason").value,
+
+    createdAt:
+      existingId
+        ? currentEstimate.createdAt
+        : new Date().toISOString(),
+
+    updatedAt:
+      new Date().toISOString()
+
+  };
+
+
+  const existingIndex=
+    estimates.findIndex(x=>x.id===data.id);
+
+  if(existingIndex>=0){
+
+    estimates[existingIndex]=data;
+
+  }
+  else{
+
+    estimates.unshift(data);
+
+  }
+
+
+  localStorage.setItem(
+    STORAGE_ESTIMATES,
+    JSON.stringify(estimates)
+  );
+
+
+  currentEstimate.editingId=data.id;
+  currentEstimate.estimateNumber=data.estimateNumber;
+  currentEstimate.quoteNumber=data.quoteNumber;
+  currentEstimate.quoteVersion=data.quoteVersion;
+  currentEstimate.createdAt=data.createdAt;
+
+
+  alert("Estimate saved successfully.");
+
+  renderDashboard();
+
+}
+
+
+/* =========================================================
+   NUMBERING
+========================================================= */
+
+function generateEstimateNumber(){
+
+  const year=new Date().getFullYear();
+
+  const number=
+    String(estimates.length+1).padStart(4,"0");
+
+  return `EST-${year}-${number}`;
+
+}
+
+
+function generateQuoteNumber(){
+
+  const year=new Date().getFullYear();
+
+  const number=
+    String(estimates.length+1).padStart(4,"0");
+
+  return `Q-${year}-${number}`;
+
+}
+
+
+/* =========================================================
+   EDIT ESTIMATE
+========================================================= */
+
+function editEstimate(id){
+
+  const e=estimates.find(x=>x.id===id);
+
+  if(!e){
+    return;
+  }
+
+  startNewEstimate();
+
+  document.getElementById("projectNumber").value=e.projectNumber || "";
+  document.getElementById("projectName").value=e.projectName || "";
+  document.getElementById("clientCompany").value=e.clientCompany || "";
+  document.getElementById("clientContact").value=e.clientContact || "";
+  document.getElementById("country").value=e.country || "";
+  document.getElementById("projectLocation").value=e.projectLocation || "";
+  document.getElementById("estimator").value=e.estimator || "";
+  document.getElementById("expectedStart").value=e.expectedStart || "";
+  document.getElementById("requiredDelivery").value=e.requiredDelivery || "";
+
+  document.getElementById("buildingType").value=e.buildingType || "Commercial";
+  document.getElementById("projectArea").value=e.projectArea || 0;
+  document.getElementById("areaUnit").value=e.areaUnit || "sq ft";
+  document.getElementById("floors").value=e.floors || 1;
+  document.getElementById("buildings").value=e.buildings || 1;
+  document.getElementById("rooms").value=e.rooms || 0;
+
+  document.getElementById("lod").value=e.lod || "300";
+  document.getElementById("pointCloudAvailable").value=e.pointCloudAvailable || "Available";
+  document.getElementById("pointCloudQuality").value=e.pointCloudQuality || "Good";
+  document.getElementById("complexity").value=e.complexity || "Medium";
+  document.getElementById("existingCAD").value=e.existingCAD || "Yes";
+  document.getElementById("existingRevit").value=e.existingRevit || "No";
+
+  document.querySelectorAll(".serviceCheck").forEach(x=>{
+    x.checked=(e.services||[]).includes(x.value);
+  });
+
+  document.querySelectorAll(".disciplineCheck").forEach(x=>{
+    x.checked=(e.disciplines||[]).includes(x.value);
+  });
+
+  document.querySelectorAll(".deliverableCheck").forEach(x=>{
+    x.checked=(e.deliverables||[]).includes(x.value);
+  });
+
+  document.getElementById("scopeDescription").value=e.scopeDescription || "";
+  document.getElementById("estimatorNotes").value=e.estimatorNotes || "";
+  document.getElementById("assumptions").value=e.assumptions || "";
+  document.getElementById("exclusions").value=e.exclusions || "";
+
+  document.getElementById("labourRate").value=e.labourRate || 15;
+  document.getElementById("contingencyPercent").value=e.contingencyPercent || 5;
+  document.getElementById("otherCosts").value=e.otherCosts || 0;
+  document.getElementById("markupPercent").value=e.markupPercent || 25;
+  document.getElementById("duration").value=e.duration || 30;
+  document.getElementById("currency").value=e.currency || "EUR";
+
+  document.getElementById("estimateStatus").value=e.status || "Draft";
+  document.getElementById("lostReason").value=e.lostReason || "";
+  document.getElementById("clientNotes").value=e.clientNotes || "";
+
+  document.getElementById("manualAdjustment").value=e.adjustment || 0;
+  document.getElementById("adjustmentReason").value=e.adjustmentReason || "";
+
+  currentEstimate.editingId=e.id;
+  currentEstimate.estimateNumber=e.estimateNumber;
+  currentEstimate.quoteNumber=e.quoteNumber;
+  currentEstimate.quoteVersion=e.quoteVersion;
+  currentEstimate.createdAt=e.createdAt;
+
+  calculateEstimate();
+  calculatePricing();
+
+  showPage("newEstimate");
+  nextStep(1);
+
+}
+
+
+/* =========================================================
+   DUPLICATE
+========================================================= */
+
+function duplicateEstimate(id){
+
+  const e=estimates.find(x=>x.id===id);
+
+  if(!e){
+    return;
+  }
+
+  editEstimate(id);
+
+  currentEstimate.editingId=null;
+
+  document.getElementById("estimateStatus").value="Draft";
+
+  alert("Estimate loaded as a new draft. Save it to create a new estimate.");
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteEstimate(id){
+
+  if(!confirm("Delete this estimate?")){
+    return;
+  }
+
+  estimates=estimates.filter(x=>x.id!==id);
+
+  localStorage.setItem(
+    STORAGE_ESTIMATES,
+    JSON.stringify(estimates)
+  );
+
+  renderEstimates();
+  renderDashboard();
+
+}
+
+
+/* =========================================================
+   ESTIMATE TABLE
+========================================================= */
+
+function renderEstimates(){
+
+  const tbody=document.getElementById("estimatesTable");
+
+  const search=
+    (document.getElementById("estimateSearch")?.value || "")
+    .toLowerCase();
+
+  const status=
+    document.getElementById("estimateFilterStatus")?.value || "";
+
+  const service=
+    document.getElementById("estimateFilterService")?.value || "";
+
+
+  const filtered=estimates.filter(e=>{
+
+    const matchesSearch=
+      !search ||
+      e.projectName.toLowerCase().includes(search) ||
+      e.clientCompany.toLowerCase().includes(search) ||
+      e.estimateNumber.toLowerCase().includes(search);
+
+    const matchesStatus=
+      !status || e.status===status;
+
+    const matchesService=
+      !service || (e.services||[]).includes(service);
+
+    return matchesSearch &&
+           matchesStatus &&
+           matchesService;
+
+  });
+
+
+  tbody.innerHTML="";
+
+
+  if(filtered.length===0){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="8" style="text-align:center;padding:30px">
+          No estimates found.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
+  filtered.forEach(e=>{
+
+    const tr=document.createElement("tr");
+
+    tr.innerHTML=`
+
+      <td>
+        <strong>${escapeHtml(e.estimateNumber)}</strong><br>
+        <span class="muted">${escapeHtml(e.quoteNumber)}</span>
+      </td>
+
+      <td>
+        <strong>${escapeHtml(e.projectName)}</strong><br>
+        <span class="muted">${escapeHtml(e.projectNumber)}</span>
+      </td>
+
+      <td>${escapeHtml(e.clientCompany)}</td>
+
+      <td>${escapeHtml((e.services||[]).join(", ") || "-")}</td>
+
+      <td>${formatNumber(e.totalHours)}</td>
+
+      <td>${money(e.finalPrice,e.currency)}</td>
+
+      <td>
+        <span class="badge ${statusClass(e.status)}">
+          ${escapeHtml(e.status)}
+        </span>
+      </td>
+
+      <td>
+
+        <div class="actions">
+
+          <button class="btn btn-secondary"
+            onclick="editEstimate('${e.id}')">
+            Edit
+          </button>
+
+          <button class="btn btn-primary"
+            onclick="loadSavedQuote('${e.id}')">
+            Quote
+          </button>
+
+          <button class="btn btn-danger"
+            onclick="deleteEstimate('${e.id}')">
+            Delete
+          </button>
+
+        </div>
+
+      </td>
+
+    `;
+
+    tbody.appendChild(tr);
+
+  });
+
+}
+
+
+/* =========================================================
+   LOAD SAVED QUOTE
+========================================================= */
+
+function loadSavedQuote(id){
+
+  const e=estimates.find(x=>x.id===id);
+
+  if(!e){
+    return;
+  }
+
+  currentEstimate={
+    editingId:e.id,
+    estimateNumber:e.estimateNumber,
+    quoteNumber:e.quoteNumber,
+    quoteVersion:e.quoteVersion,
+    createdAt:e.createdAt,
+    breakdown:e.breakdown || [],
+    modelHours:e.modelHours || 0,
+    qaHours:e.qaHours || 0,
+    pmHours:e.pmHours || 0,
+    totalHours:e.totalHours || 0,
+    internalLabourCost:e.internalLabourCost || 0,
+    contingency:e.contingency || 0,
+    otherCosts:e.otherCosts || 0,
+    costBasis:e.costBasis || 0,
+    markup:e.markup || 0,
+    finalPrice:e.finalPrice || 0
+  };
+
+  window.activeSavedEstimate=e;
+
+  showPage("quotePrintPage");
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard(){
+
+  const total=estimates.length;
+
+  const pending=
+    estimates.filter(e=>
+      ["Draft","Under Review","On Hold"].includes(e.status)
+    ).length;
+
+  const won=
+    estimates.filter(e=>e.status==="Won").length;
+
+  const lost=
+    estimates.filter(e=>e.status==="Lost").length;
+
+  const completed=won+lost;
+
+  const winRate=
+    completed
+      ? (won/completed)*100
+      : 0;
+
+  const quoted=
+    estimates.reduce((sum,e)=>
+      sum+Number(e.finalPrice||0),0);
+
+  const hours=
+    estimates.reduce((sum,e)=>
+      sum+Number(e.totalHours||0),0);
+
+  const average=
+    total ? quoted/total : 0;
+
+  const averageHours=
+    total ? hours/total : 0;
+
+
+  document.getElementById("statTotal").textContent=total;
+  document.getElementById("statPending").textContent=pending;
+  document.getElementById("statWon").textContent=won;
+  document.getElementById("statLost").textContent=lost;
+  document.getElementById("statWinRate").textContent=
+    winRate.toFixed(1)+"%";
+
+  document.getElementById("dashboardQuoted").textContent=
+    formatAllCurrencies(quoted);
+
+  document.getElementById("dashboardHours").textContent=
+    formatNumber(hours);
+
+  document.getElementById("dashboardAverage").textContent=
+    formatAllCurrencies(average);
+
+  document.getElementById("dashboardAverageHours").textContent=
+    formatNumber(averageHours);
+
+
+  const denominator=Math.max(total,1);
+
+  document.getElementById("progressDraft").style.width=
+    (estimates.filter(e=>e.status==="Draft").length/denominator*100)+"%";
+
+  document.getElementById("progressReview").style.width=
+    (estimates.filter(e=>e.status==="Under Review").length/denominator*100)+"%";
+
+  document.getElementById("progressApproved").style.width=
+    (estimates.filter(e=>
+      ["Approved","Sent"].includes(e.status)
+    ).length/denominator*100)+"%";
+
+  document.getElementById("progressWon").style.width=
+    (won/denominator*100)+"%";
+
+
+  const tbody=document.getElementById("dashboardTable");
+
+  tbody.innerHTML="";
+
+
+  estimates.slice(0,8).forEach(e=>{
+
+    const tr=document.createElement("tr");
+
+    tr.innerHTML=`
+
+      <td>${escapeHtml(e.estimateNumber)}</td>
+
+      <td>${escapeHtml(e.projectName)}</td>
+
+      <td>${escapeHtml(e.clientCompany)}</td>
+
+      <td>${escapeHtml((e.services||[]).join(", ") || "-")}</td>
+
+      <td>${formatNumber(e.totalHours)}</td>
+
+      <td>${money(e.finalPrice,e.currency)}</td>
+
+      <td>
+        <span class="badge ${statusClass(e.status)}">
+          ${escapeHtml(e.status)}
+        </span>
+      </td>
+
+    `;
+
+    tbody.appendChild(tr);
+
+  });
+
+
+  if(estimates.length===0){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="7" style="text-align:center;padding:30px">
+          No estimates yet. Click "New Estimate" to create your first project.
+        </td>
+      </tr>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   CLIENTS
+========================================================= */
+
+function renderClients(){
+
+  const map={};
+
+  estimates.forEach(e=>{
+
+    const name=e.clientCompany || "Unknown";
+
+    if(!map[name]){
+
+      map[name]={
+        name,
+        country:e.country || "",
+        projects:0,
+        value:0,
+        won:0
+      };
+
+    }
+
+    map[name].projects++;
+    map[name].value+=Number(e.finalPrice||0);
+
+    if(e.status==="Won"){
+      map[name].won++;
+    }
+
+  });
+
+
+  const tbody=document.getElementById("clientsTable");
+
+  tbody.innerHTML="";
+
+
+  Object.values(map).forEach(c=>{
+
+    const tr=document.createElement("tr");
+
+    tr.innerHTML=`
+
+      <td><strong>${escapeHtml(c.name)}</strong></td>
+
+      <td>${escapeHtml(c.country)}</td>
+
+      <td>${c.projects}</td>
+
+      <td>${formatAllCurrencies(c.value)}</td>
+
+      <td>${c.won}</td>
+
+    `;
+
+    tbody.appendChild(tr);
+
+  });
+
+
+  if(Object.keys(map).length===0){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="5" style="text-align:center;padding:30px">
+          No client data yet.
+        </td>
+      </tr>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
+
+function renderReports(){
+
+  const won=
+    estimates.filter(e=>e.status==="Won").length;
+
+  const lost=
+    estimates.filter(e=>e.status==="Lost").length;
+
+  const completed=won+lost;
+
+  const winRate=
+    completed ? won/completed*100 : 0;
+
+  const quoted=
+    estimates.reduce((s,e)=>
+      s+Number(e.finalPrice||0),0);
+
+  const hours=
+    estimates.reduce((s,e)=>
+      s+Number(e.totalHours||0),0);
+
+  const average=
+    estimates.length ? quoted/estimates.length : 0;
+
+
+  document.getElementById("reportWon").textContent=won;
+  document.getElementById("reportLost").textContent=lost;
+  document.getElementById("reportWinRate").textContent=
+    winRate.toFixed(1)+"%";
+
+  document.getElementById("reportQuoted").textContent=
+    formatAllCurrencies(quoted);
+
+  document.getElementById("reportAverage").textContent=
+    formatAllCurrencies(average);
+
+  document.getElementById("reportHours").textContent=
+    formatNumber(hours);
+
+
+  const reasons={};
+
+  estimates
+    .filter(e=>e.status==="Lost")
+    .forEach(e=>{
+
+      const reason=e.lostReason || "Not specified";
+
+      reasons[reason]=(reasons[reason]||0)+1;
+
+    });
+
+
+  const container=document.getElementById("lossReasons");
+
+  container.innerHTML="";
+
+
+  Object.entries(reasons)
+    .sort((a,b)=>b[1]-a[1])
+    .forEach(([reason,count])=>{
+
+      const row=document.createElement("div");
+
+      row.className="summary-row";
+
+      row.innerHTML=`
+        <span>${escapeHtml(reason)}</span>
+        <strong>${count}</strong>
+      `;
+
+      container.appendChild(row);
+
+    });
+
+
+  if(Object.keys(reasons).length===0){
+
+    container.innerHTML=
+      `<div class="muted">No lost projects recorded yet.</div>`;
+
+  }
+
+}
+
+
+/* =========================================================
+   RATE LIBRARY
+========================================================= */
+
+function loadRateInputs(){
+
+  document.querySelectorAll(".rate-input").forEach(input=>{
+
+    input.value=rates[input.dataset.key] ?? "";
+
+  });
+
+
+  document.getElementById("ratePCExcellent").value=rates.pcExcellent;
+  document.getElementById("ratePCGood").value=rates.pcGood;
+  document.getElementById("ratePCAverage").value=rates.pcAverage;
+  document.getElementById("ratePCPoor").value=rates.pcPoor;
+  document.getElementById("ratePCVeryPoor").value=rates.pcVeryPoor;
+
+  document.getElementById("rateComplexLow").value=rates.complexLow;
+  document.getElementById("rateComplexMedium").value=rates.complexMedium;
+  document.getElementById("rateComplexHigh").value=rates.complexHigh;
+  document.getElementById("rateComplexVeryHigh").value=rates.complexVeryHigh;
+
+  document.getElementById("rateQA").value=rates.qa;
+  document.getElementById("ratePM").value=rates.pm;
+
+}
+
+
+function saveRates(){
+
+  document.querySelectorAll(".rate-input").forEach(input=>{
+
+    rates[input.dataset.key]=
+      Number(input.value)||0;
+
+  });
+
+
+  rates.pcExcellent=
+    Number(document.getElementById("ratePCExcellent").value)||1;
+
+  rates.pcGood=
+    Number(document.getElementById("ratePCGood").value)||1;
+
+  rates.pcAverage=
+    Number(document.getElementById("ratePCAverage").value)||1;
+
+  rates.pcPoor=
+    Number(document.getElementById("ratePCPoor").value)||1;
+
+  rates.pcVeryPoor=
+    Number(document.getElementById("ratePCVeryPoor").value)||1;
+
+  rates.complexLow=
+    Number(document.getElementById("rateComplexLow").value)||1;
+
+  rates.complexMedium=
+    Number(document.getElementById("rateComplexMedium").value)||1;
+
+  rates.complexHigh=
+    Number(document.getElementById("rateComplexHigh").value)||1;
+
+  rates.complexVeryHigh=
+    Number(document.getElementById("rateComplexVeryHigh").value)||1;
+
+  rates.qa=
+    Number(document.getElementById("rateQA").value)||0;
+
+  rates.pm=
+    Number(document.getElementById("ratePM").value)||0;
+
+
+  localStorage.setItem(
+    STORAGE_RATES,
+    JSON.stringify(rates)
+  );
+
+
+  alert("Rate Library saved successfully.");
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function loadSettings(){
+
+  document.getElementById("companyName").value=
+    settings.companyName || "";
+
+  document.getElementById("companyEmail").value=
+    settings.companyEmail || "";
+
+  document.getElementById("companyWebsite").value=
+    settings.companyWebsite || "";
+
+  document.getElementById("companyAddress").value=
+    settings.companyAddress || "";
+
+}
+
+
+function saveSettings(){
+
+  settings={
+
+    companyName:
+      document.getElementById("companyName").value,
+
+    companyEmail:
+      document.getElementById("companyEmail").value,
+
+    companyWebsite:
+      document.getElementById("companyWebsite").value,
+
+    companyAddress:
+      document.getElementById("companyAddress").value
+
+  };
+
+
+  localStorage.setItem(
+    STORAGE_SETTINGS,
+    JSON.stringify(settings)
+  );
+
+
+  alert("Company settings saved.");
+
+}
+
+
+/* =========================================================
+   CLIENT QUOTATION
+========================================================= */
+
+function getActiveEstimate(){
+
+  if(window.activeSavedEstimate){
+    return window.activeSavedEstimate;
+  }
+
+  const id=currentEstimate.editingId;
+
+  if(id){
+
+    const found=estimates.find(x=>x.id===id);
+
+    if(found){
+      return found;
+    }
+
+  }
+
+
+  return buildTemporaryEstimate();
+
+}
+
+
+function buildTemporaryEstimate(){
+
+  return {
+
+    estimateNumber:
+      currentEstimate.estimateNumber || "DRAFT",
+
+    quoteNumber:
+      currentEstimate.quoteNumber || "DRAFT",
+
+    projectNumber:
+      document.getElementById("projectNumber").value,
+
+    projectName:
+      document.getElementById("projectName").value,
+
+    clientCompany:
+      document.getElementById("clientCompany").value,
+
+    clientContact:
+      document.getElementById("clientContact").value,
+
+    country:
+      document.getElementById("country").value,
+
+    projectLocation:
+      document.getElementById("projectLocation").value,
+
+    estimator:
+      document.getElementById("estimator").value,
+
+    services:
+      checkedValues("serviceCheck"),
+
+    disciplines:
+      checkedValues("disciplineCheck"),
+
+    deliverables:
+      checkedValues("deliverableCheck"),
+
+    lod:
+      document.getElementById("lod").value,
+
+    projectArea:
+      document.getElementById("projectArea").value,
+
+    areaUnit:
+      document.getElementById("areaUnit").value,
+
+    duration:
+      document.getElementById("duration").value,
+
+    scopeDescription:
+      document.getElementById("scopeDescription").value,
+
+    assumptions:
+      document.getElementById("assumptions").value,
+
+    exclusions:
+      document.getElementById("exclusions").value,
+
+    finalPrice:
+      currentEstimate.finalPrice,
+
+    currency:
+      document.getElementById("currency").value,
+
+    totalHours:
+      currentEstimate.totalHours,
+
+    status:
+      document.getElementById("estimateStatus").value
+
+  };
+
+}
+
+
+function renderQuote(){
+
+  const e=getActiveEstimate();
+
+  const date=new Date().toLocaleDateString();
+
+  document.getElementById("quoteDocument").innerHTML=`
+
+    <div class="report-header">
+
+      <h1>${escapeHtml(settings.companyName)}</h1>
+
+      <div class="muted">
+        ${escapeHtml(settings.companyAddress || "")}
+        ${settings.companyEmail ? " • "+escapeHtml(settings.companyEmail) : ""}
+      </div>
+
+      <br>
+
+      <h2>QUOTATION</h2>
+
+      <div class="grid grid-2">
+
+        <div>
+          <strong>Quotation No.</strong><br>
+          ${escapeHtml(e.quoteNumber || "-")}
+        </div>
+
+        <div>
+          <strong>Date</strong><br>
+          ${date}
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Client Information</h3>
+
+      <p>
+        <strong>${escapeHtml(e.clientCompany || "-")}</strong><br>
+        ${escapeHtml(e.clientContact || "")}<br>
+        ${escapeHtml(e.country || "")}
+      </p>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Project Information</h3>
+
+      <table class="report-table">
+
+        <tr>
+          <td><strong>Project Number</strong></td>
+          <td>${escapeHtml(e.projectNumber || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Project</strong></td>
+          <td>${escapeHtml(e.projectName || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Location</strong></td>
+          <td>${escapeHtml(e.projectLocation || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Services</strong></td>
+          <td>${escapeHtml((e.services||[]).join(", "))}</td>
+        </tr>
+
+        <tr>
+          <td><strong>LOD</strong></td>
+          <td>LOD ${escapeHtml(e.lod || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Project Area</strong></td>
+          <td>${formatNumber(e.projectArea)} ${escapeHtml(e.areaUnit || "")}</td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Scope of Services</h3>
+
+      <p>
+        ${escapeHtml(
+          e.scopeDescription ||
+          "Professional Scan-to-BIM / Scan-to-CAD / digital construction services as agreed with the client."
+        )}
+      </p>
+
+      <p>
+        The selected services include:
+        <strong>
+          ${escapeHtml((e.services||[]).join(", ") || "As agreed")}
+        </strong>
+      </p>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Disciplines</h3>
+
+      <p>
+        ${escapeHtml((e.disciplines||[]).join(" • ") || "As agreed")}
+      </p>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Deliverables</h3>
+
+      <ul>
+        ${(e.deliverables||[])
+          .map(d=>`<li>${escapeHtml(d)}</li>`)
+          .join("")}
+      </ul>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Project Timeline</h3>
+
+      <p>
+        Estimated delivery period:
+        <strong>${escapeHtml(String(e.duration || "-"))} working days</strong>
+      </p>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Commercials</h3>
+
+      <table class="report-table">
+
+        <tr>
+          <td>Professional Services</td>
+          <td style="text-align:right">
+            <strong>${money(e.finalPrice,e.currency)}</strong>
+          </td>
+        </tr>
+
+        <tr class="report-total">
+          <td><strong>Total Quotation Value</strong></td>
+          <td style="text-align:right">
+            <strong>${money(e.finalPrice,e.currency)}</strong>
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Assumptions</h3>
+
+      <div style="white-space:pre-line">
+        ${escapeHtml(e.assumptions || "As agreed with the client.")}
+      </div>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Exclusions</h3>
+
+      <div style="white-space:pre-line">
+        ${escapeHtml(e.exclusions || "As agreed with the client.")}
+      </div>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Validity</h3>
+
+      <p>
+        This quotation is subject to the agreed scope, assumptions,
+        deliverables and commercial terms.
+      </p>
+
+    </div>
+
+
+    <br><br>
+
+    <div style="border-top:1px solid #ddd;padding-top:20px">
+
+      <strong>Prepared by:</strong>
+      ${escapeHtml(e.estimator || "Estimation Team")}
+
+      <br><br>
+
+      <strong>For:</strong>
+      ${escapeHtml(settings.companyName)}
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   INTERNAL REPORT
+========================================================= */
+
+function renderInternalReport(){
+
+  const e=getActiveEstimate();
+
+  const currency=e.currency || "EUR";
+
+  const breakdown=e.breakdown || currentEstimate.breakdown || [];
+
+  document.getElementById("internalDocument").innerHTML=`
+
+    <div class="report-header">
+
+      <h1>${escapeHtml(settings.companyName)}</h1>
+
+      <h2>INTERNAL ESTIMATION REPORT</h2>
+
+      <div class="muted">
+        Confidential - Internal Use Only
+      </div>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Project Information</h3>
+
+      <table class="report-table">
+
+        <tr>
+          <td><strong>Estimate</strong></td>
+          <td>${escapeHtml(e.estimateNumber || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Quotation</strong></td>
+          <td>${escapeHtml(e.quoteNumber || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Project</strong></td>
+          <td>${escapeHtml(e.projectName || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Project Number</strong></td>
+          <td>${escapeHtml(e.projectNumber || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Client</strong></td>
+          <td>${escapeHtml(e.clientCompany || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>LOD</strong></td>
+          <td>LOD ${escapeHtml(e.lod || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Area</strong></td>
+          <td>${formatNumber(e.projectArea)} ${escapeHtml(e.areaUnit || "")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>${escapeHtml(e.complexity || "-")}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Point Cloud Quality</strong></td>
+          <td>${escapeHtml(e.pointCloudQuality || "-")}</td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Estimation Breakdown</h3>
+
+      <table class="report-table">
+
+        <thead>
+
+          <tr>
+            <th>Work Package</th>
+            <th>System Hours</th>
+            <th>Adjustment</th>
+            <th>Final Hours</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${breakdown.map(item=>`
+
+            <tr>
+
+              <td>${escapeHtml(item.workPackage)}</td>
+
+              <td>${formatNumber(item.systemHours)}</td>
+
+              <td>${formatNumber(item.adjustment)}</td>
+
+              <td><strong>${formatNumber(item.finalHours)}</strong></td>
+
+            </tr>
+
+          `).join("")}
+
+          <tr>
+            <td><strong>QA/QC</strong></td>
+            <td colspan="2"></td>
+            <td><strong>${formatNumber(e.qaHours)}</strong></td>
+          </tr>
+
+          <tr>
+            <td><strong>Project Management</strong></td>
+            <td colspan="2"></td>
+            <td><strong>${formatNumber(e.pmHours)}</strong></td>
+          </tr>
+
+          <tr class="report-total">
+            <td><strong>Total</strong></td>
+            <td colspan="2"></td>
+            <td><strong>${formatNumber(e.totalHours)}</strong></td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Internal Commercial Calculation</h3>
+
+      <table class="report-table">
+
+        <tr>
+          <td>Total Hours</td>
+          <td style="text-align:right">${formatNumber(e.totalHours)}</td>
+        </tr>
+
+        <tr>
+          <td>Internal Labour Cost</td>
+          <td style="text-align:right">${money(e.internalLabourCost,currency)}</td>
+        </tr>
+
+        <tr>
+          <td>Contingency</td>
+          <td style="text-align:right">${money(e.contingency,currency)}</td>
+        </tr>
+
+        <tr>
+          <td>Other Costs</td>
+          <td style="text-align:right">${money(e.otherCosts,currency)}</td>
+        </tr>
+
+        <tr>
+          <td>Internal Cost Basis</td>
+          <td style="text-align:right">${money(e.costBasis,currency)}</td>
+        </tr>
+
+        <tr>
+          <td>Markup</td>
+          <td style="text-align:right">${money(e.markup,currency)}</td>
+        </tr>
+
+        <tr class="report-total">
+          <td><strong>Client Price</strong></td>
+          <td style="text-align:right">
+            <strong>${money(e.finalPrice,currency)}</strong>
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Estimator Notes</h3>
+
+      <div style="white-space:pre-line">
+        ${escapeHtml(e.estimatorNotes || "No notes.")}
+      </div>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Estimator Adjustment</h3>
+
+      <p>
+        Adjustment:
+        <strong>${formatNumber(e.adjustment || 0)} hrs</strong>
+      </p>
+
+      <p>
+        Reason:
+        ${escapeHtml(e.adjustmentReason || "None")}
+      </p>
+
+    </div>
+
+
+    <div class="quote-section">
+
+      <h3>Status</h3>
+
+      <strong>${escapeHtml(e.status || "Draft")}</strong>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   DATA EXPORT
+========================================================= */
+
+function exportData(){
+
+  const data={
+    estimates,
+    rates,
+    settings,
+    exportedAt:new Date().toISOString()
+  };
+
+  const blob=
+    new Blob(
+      [JSON.stringify(data,null,2)],
+      {type:"application/json"}
+    );
+
+  const url=
+    URL.createObjectURL(blob);
+
+  const a=document.createElement("a");
+
+  a.href=url;
+  a.download=
+    `estimation-hub-backup-${new Date().toISOString().slice(0,10)}.json`;
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   DATA IMPORT
+========================================================= */
+
+function importData(event){
+
+  const file=event.target.files[0];
+
+  if(!file){
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=function(){
+
+    try{
+
+      const data=JSON.parse(reader.result);
+
+      if(Array.isArray(data.estimates)){
+        estimates=data.estimates;
+      }
+
+      if(data.rates){
+        rates=data.rates;
+      }
+
+      if(data.settings){
+        settings=data.settings;
+      }
+
+      localStorage.setItem(
+        STORAGE_ESTIMATES,
+        JSON.stringify(estimates)
+      );
+
+      localStorage.setItem(
+        STORAGE_RATES,
+        JSON.stringify(rates)
+      );
+
+      localStorage.setItem(
+        STORAGE_SETTINGS,
+        JSON.stringify(settings)
+      );
+
+      alert("Backup imported successfully.");
+
+      renderDashboard();
+
+    }
+    catch(error){
+
+      alert("Invalid backup file.");
+
+    }
+
+  };
+
+  reader.readAsText(file);
+
+}
+
+
+/* =========================================================
+   DELETE ALL
+========================================================= */
+
+function clearAllData(){
+
+  const confirmation=
+    prompt(
+      'Type DELETE to remove all local estimates and settings.'
+    );
+
+  if(confirmation!=="DELETE"){
+    return;
+  }
+
+  localStorage.removeItem(STORAGE_ESTIMATES);
+  localStorage.removeItem(STORAGE_RATES);
+  localStorage.removeItem(STORAGE_SETTINGS);
+
+  location.reload();
+
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function formatNumber(value){
+
+  return Number(value||0).toLocaleString(
+    undefined,
+    {
+      maximumFractionDigits:1
+    }
+  );
+
+}
+
+
+function money(value,currency){
+
+  return Number(value||0).toLocaleString(
+    undefined,
+    {
+      style:"currency",
+      currency:currency || "EUR",
+      maximumFractionDigits:2
+    }
+  );
+
+}
+
+
+function formatAllCurrencies(value){
+
+  return Number(value||0).toLocaleString(
+    undefined,
+    {
+      maximumFractionDigits:0
+    }
+  );
+
+}
+
+
+function statusClass(status){
+
+  const map={
+    "Draft":"badge-draft",
+    "Under Review":"badge-review",
+    "Approved":"badge-approved",
+    "Sent":"badge-sent",
+    "Won":"badge-won",
+    "Lost":"badge-lost",
+    "On Hold":"badge-hold",
+    "Cancelled":"badge-lost"
+  };
+
+  return map[status] || "badge-draft";
+
+}
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   INITIALISE
+========================================================= */
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const menuToggle=document.getElementById("menuToggle");
+  const sidebarBackdrop=document.getElementById("sidebarBackdrop");
+
+  const setSidebarOpen=open=>{
+    document.body.classList.toggle("sidebar-open",open);
+    menuToggle.setAttribute("aria-expanded",String(open));
+    menuToggle.setAttribute("aria-label",open ? "Close navigation" : "Open navigation");
+  };
+
+  menuToggle.addEventListener("click",()=>{
+    setSidebarOpen(menuToggle.getAttribute("aria-expanded")!=="true");
+  });
+
+  sidebarBackdrop.addEventListener("click",()=>{
+    setSidebarOpen(false);
+    menuToggle.focus();
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(button=>{
+    button.addEventListener("click",()=>{
+      if(document.body.classList.contains("sidebar-open")){
+        setSidebarOpen(false);
+        menuToggle.focus();
+      }
+    });
+  });
+
+  document.addEventListener("keydown",event=>{
+    if(event.key==="Escape" && document.body.classList.contains("sidebar-open")){
+      setSidebarOpen(false);
+      menuToggle.focus();
+    }
+  });
+
+  renderDashboard();
+
+  loadRateInputs();
+
+  loadSettings();
+
+});
+
+</script>
+
+</body>
+</html>
