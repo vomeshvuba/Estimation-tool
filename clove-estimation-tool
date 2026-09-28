@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -627,23 +624,6 @@ tr:hover td{
 }
 </style>
 <style>
-:root{
-  --primary:#F97316;
-  --primary-dark:#C2410C;
-  --secondary:#FFF7ED;
-  --success:#15803D;
-  --warning:#F59E0B;
-  --danger:#DC2626;
-  --text:#171717;
-  --muted:#737373;
-  --border:#E5E5E5;
-  --bg:#F8FAFC;
-  --white:#fff;
-  --shadow:0 4px 20px rgba(0,0,0,.05);
-  --sidebar-width:264px;
-  --radius-card:14px;
-  --radius-control:9px;
-}
 html{scroll-behavior:smooth}
 body{min-width:320px;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
 button,input,select,textarea{font-family:inherit}
@@ -812,6 +792,122 @@ tbody td[colspan]{background:#fafafa;color:#737373}
   .report-preview .report-table{width:100%}
 }
 </style>
+<style>
+:root{
+  --ink:#0B0B0F;
+  --ink-raised:#111318;
+  --ink-soft:#1F2026;
+  --orange-bright:#FB923C;
+  --surface-alt:#F6F7F9;
+  --line-soft:rgba(23,24,29,.08);
+  --shadow:0 8px 30px rgba(17,19,24,.045);
+}
+body{background:var(--surface-alt)}
+.sidebar{background:linear-gradient(180deg,#0B0B0F,#111318);border-right:1px solid rgba(255,255,255,.07);color:#F8FAFC;box-shadow:8px 0 30px rgba(11,11,15,.08)}
+.logo{border-color:rgba(255,255,255,.1)}
+.brand-mark{background:linear-gradient(145deg,rgba(249,115,22,.24),rgba(194,65,12,.12));color:#FB923C;box-shadow:inset 0 0 0 1px rgba(249,115,22,.18)}
+.logo-copy h1{color:#fff}.logo-copy span{color:#a1a1aa}
+.nav-section{color:#858791}
+.nav-btn{color:#b4b6bf}
+.nav-btn:hover{background:rgba(255,255,255,.055);color:#fff}
+.nav-btn.active{background:linear-gradient(90deg,rgba(249,115,22,.2),rgba(249,115,22,.07));color:#fff;box-shadow:inset 0 0 0 1px rgba(249,115,22,.13),0 0 24px rgba(249,115,22,.07)}
+.nav-btn.active::before{background:linear-gradient(180deg,#FB923C,#C2410C);box-shadow:0 0 12px rgba(249,115,22,.55)}
+.nav-icon{color:#858791}.nav-btn.active .nav-icon,.nav-btn:hover .nav-icon{color:#FB923C}
+.topbar{background:rgba(246,247,249,.84);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(17,19,24,.035)}
+.user-badge{background:rgba(255,255,255,.78);backdrop-filter:blur(12px);border-color:#e4e5e8;color:#52545c}
+.content{max-width:1560px}
+.dashboard-page{background-color:#F6F7F9;background-image:radial-gradient(circle at 96% 0%,rgba(249,115,22,.075),transparent 25%),linear-gradient(rgba(31,32,38,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(31,32,38,.022) 1px,transparent 1px);background-size:auto,32px 32px,32px 32px;background-position:top right,0 0,0 0}
+.dashboard-hero{position:relative;isolation:isolate;min-height:142px;overflow:hidden;padding:25px 28px;margin:0 0 20px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:radial-gradient(ellipse at 87% 10%,rgba(249,115,22,.18),transparent 32%),linear-gradient(125deg,#0B0B0F 0%,#17181D 68%,#1F2026 100%);box-shadow:0 16px 38px rgba(11,11,15,.12)}
+.dashboard-hero::after{position:absolute;z-index:-1;inset:0 0 0 auto;width:40%;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:24px 24px;mask-image:linear-gradient(90deg,transparent,#000 80%);content:""}
+.dashboard-hero>div:first-child{position:relative;z-index:1}
+.dashboard-hero>div:first-child::before{display:block;margin-bottom:9px;color:#FB923C;content:"ESTIMATION OPERATIONS  /  OVERVIEW";font-size:10px;font-weight:700;letter-spacing:.14em}
+.dashboard-hero h2{color:#fff!important;font-size:25px!important;font-weight:650!important;line-height:1.25}
+.dashboard-hero .muted{max-width:590px;margin-top:7px;color:#b4b6bf;font-size:13px}
+.dashboard-hero>.btn{position:relative;z-index:1;border:1px solid rgba(255,255,255,.14);background:linear-gradient(135deg,#C2410C,#9A3412);box-shadow:0 6px 18px rgba(249,115,22,.2)}
+.dashboard-hero>.btn:hover{background:linear-gradient(135deg,#D64F12,#A83A10);box-shadow:0 8px 23px rgba(249,115,22,.28)}
+.card,.stat{border-color:var(--line-soft);box-shadow:0 8px 28px rgba(17,19,24,.04)}
+.card h3{color:#202127}
+.stats{gap:13px;margin-bottom:20px}
+.stat{min-height:128px;padding:17px 18px 16px 20px;border-radius:13px;box-shadow:0 5px 20px rgba(17,19,24,.035)}
+.stat::before{position:absolute;top:18px;right:17px;width:9px;height:9px;border:2px solid #FDBA74;border-radius:50%;background:#fff;content:""}
+.stat:first-child{border-color:#25262d;background:linear-gradient(145deg,#111318,#1F2026);box-shadow:0 9px 24px rgba(11,11,15,.13)}
+.stat:first-child::before{border-color:#FB923C;background:#F97316;box-shadow:0 0 13px rgba(249,115,22,.4)}
+.stat:first-child .stat-label,.stat:first-child .stat-small{color:#c5c6cc}
+.stat:first-child .stat-value{color:#fff}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.stat-value{font-size:28px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat-small{font-size:11px}
+.dashboard-page>.grid.grid-2>.card:first-child{position:relative;overflow:hidden;border-color:#25262d;background:linear-gradient(140deg,#111318,#1F2026);color:#F8FAFC;box-shadow:0 12px 28px rgba(11,11,15,.11)}
+.dashboard-page>.grid.grid-2>.card:first-child::after{position:absolute;right:-42px;top:-55px;width:190px;height:190px;border:1px solid rgba(251,146,60,.16);border-radius:50%;box-shadow:0 0 0 22px rgba(249,115,22,.025),0 0 0 46px rgba(249,115,22,.02);content:""}
+.dashboard-page>.grid.grid-2>.card:first-child h3{color:#fff}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row{position:relative;z-index:1;border-color:rgba(255,255,255,.1)}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row span{color:#c5c6cc}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row strong{color:#fff}
+.dashboard-page>.grid.grid-2>.card:first-child .summary-row:first-of-type strong{color:#FB923C;font-size:16px}
+.dashboard-page>.grid.grid-2>.card:last-child,.dashboard-page>.card:last-child{background:rgba(255,255,255,.96)}
+.dashboard-page .progress{background:#e9eaed}
+.dashboard-page #progressDraft{background:#737373!important}
+.dashboard-page #progressReview{background:#b45309!important}
+.dashboard-page #progressApproved{background:#C2410C!important}
+.dashboard-page #progressWon{background:#15803D!important}
+.section-title:has(>h3){margin-bottom:14px}
+.btn-primary{background:linear-gradient(135deg,#C2410C,#9A3412);box-shadow:0 3px 10px rgba(194,65,12,.17)}
+.btn-primary:hover{background:linear-gradient(135deg,#D64F12,#A83A10);box-shadow:0 5px 15px rgba(194,65,12,.24)}
+.btn-secondary{border-color:#dfe1e5;color:#34363d}
+.btn-secondary:hover{border-color:#FDBA74;background:#FFF7ED;color:#9A3412}
+.btn-success{background:#15803D}
+.btn,.nav-btn,.stat{transition-duration:.18s;transition-timing-function:ease-out}
+.field input,.field select,.field textarea{border-color:#dfe1e5;border-radius:10px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#C2410C;box-shadow:0 0 0 4px rgba(249,115,22,.1)}
+.steps{gap:8px;padding:4px 0 9px}
+.step{position:relative;min-width:122px;border:1px solid #e5e7eb;border-radius:9px;background:#f1f2f4;color:#64666f;font-size:11px;letter-spacing:.02em}
+.step.active{border-color:#9A3412;background:linear-gradient(135deg,#C2410C,#9A3412);color:#fff;box-shadow:0 4px 13px rgba(194,65,12,.2)}
+.step.completed{border-color:#fed7aa;background:#FFF7ED;color:#9A3412}
+.table-wrap{border-color:#e7e8eb;border-radius:12px;background:#fff}
+table{font-size:12px}
+th{background:#f4f5f7;color:#4f5159;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+td{color:#363840}
+tbody tr:hover td{background:#fff8f1}
+.badge{font-size:10px;letter-spacing:.01em}
+.summary-box:has(#finalPrice){position:relative;overflow:hidden;padding:18px;border-color:#25262d;background:linear-gradient(140deg,#111318,#1F2026);color:#F8FAFC;box-shadow:0 14px 34px rgba(11,11,15,.13)}
+.summary-box:has(#finalPrice)::before{position:absolute;right:-25px;top:-45px;width:145px;height:145px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.19),transparent 68%);content:"";pointer-events:none}
+.summary-box:has(#finalPrice) .summary-row{position:relative;z-index:1;border-color:rgba(255,255,255,.1)}
+.summary-box:has(#finalPrice) .summary-row span{color:#c5c6cc}
+.summary-box:has(#finalPrice) .summary-row strong{color:#fff}
+.summary-box:has(#finalPrice) .summary-row:last-child{margin:12px -18px -18px;padding:17px 18px;border-top:1px solid rgba(251,146,60,.25);border-radius:0 0 11px 11px;background:linear-gradient(105deg,rgba(249,115,22,.16),rgba(249,115,22,.05))}
+.summary-box:has(#finalPrice) .summary-row:last-child span{color:#fff;font-weight:650}
+.summary-total{color:#FB923C!important;font-size:25px;font-variant-numeric:tabular-nums;line-height:1.2}
+.summary-row strong{font-variant-numeric:tabular-nums}
+.page:not(.dashboard-page) .card>h3{display:flex;align-items:center;gap:10px}
+.page:not(.dashboard-page) .card>h3::before{width:3px;height:16px;flex:0 0 3px;border-radius:3px;background:linear-gradient(180deg,#FB923C,#C2410C);content:""}
+.table-wrap .btn{min-height:30px;padding:6px 9px;border-radius:7px;font-size:11px}
+.report-preview{border-color:#e5e7eb;box-shadow:0 10px 32px rgba(17,19,24,.07)}
+.modal-content{border-radius:16px;animation:modal-arrive .18s ease-out}
+@keyframes modal-arrive{from{opacity:0;transform:translateY(6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(min-width:1300px){.dashboard-page>.grid.grid-2{grid-template-columns:1.15fr .85fr}}
+@media(min-width:761px) and (max-width:1050px){.dashboard-hero{padding:22px}.stat{padding-right:14px;padding-left:16px}.stat-value{font-size:24px}}
+@media(max-width:760px){
+  .sidebar{background:linear-gradient(180deg,#0B0B0F,#111318);border-color:rgba(255,255,255,.08)}
+  .dashboard-hero{align-items:flex-start;min-height:0;padding:20px 18px}
+  .dashboard-hero h2{font-size:21px!important}
+  .dashboard-hero>.btn{align-self:flex-start}
+  .dashboard-page>.grid.grid-2{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:520px){
+  .dashboard-hero{gap:14px}
+  .dashboard-hero>.btn{width:100%}
+  .dashboard-hero .muted{max-width:38ch}
+  .stats{gap:9px}.stat{min-height:112px;padding:14px}.stat-value{font-size:24px}
+  .steps{gap:6px}.step{flex-basis:112px;min-width:112px;padding:10px 8px}
+  .summary-total{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media print{
+  body{background:#fff!important}
+  .dashboard-page,.sidebar{background:#fff!important;background-image:none!important;color:#171717!important}
+  .report-preview{box-shadow:none}
+}
+</style>
 </head>
 
 <body>
@@ -907,12 +1003,12 @@ tbody td[colspan]{background:#fafafa;color:#737373}
   <div class="content">
 
     <!-- ================= DASHBOARD ================= -->
-    <section id="dashboard" class="page active">
+    <section id="dashboard" class="page active dashboard-page">
 
-      <div class="section-title">
+      <div class="section-title dashboard-hero">
         <div>
-          <h2 style="margin:0">Estimation Dashboard</h2>
-          <div class="muted">Overview of project estimates and quotations.</div>
+          <h2 style="margin:0">Quotation Command Center</h2>
+          <div class="muted">Monitor estimates, project opportunities, and commercial performance.</div>
         </div>
 
         <button class="btn btn-primary" onclick="startNewEstimate()">
